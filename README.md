@@ -50,7 +50,11 @@ choco install kubernetes-cli
 ```
 
 W-4: Install language compiler  
-Node.js  
+Node.js
+```powershell
+choco install nodejs
+```
+  
 .NET
 
 W-5: Install virtualbox
