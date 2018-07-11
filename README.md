@@ -1,37 +1,93 @@
-## Welcome to GitHub Pages
+# Containers and Kubernetes Workshop
+## for Code On The Beach 2018
 
-You can use the [editor on GitHub](https://github.com/DonSchenck/containers-k8s-workshop/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+### About this workshop  
+This workshop will guide the participant to use Linux-based containers to build and run applications. In addition, managing a containerized system using Kubernetes will be introduced.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+## Table of Contents
+1. [Installing The Prerequisites](#installing-the-prerequisites)
+2. [Using Docker Hub](#using-docker-hub)
+3. [Running Hello World](#running-hello-world)
+4. [Building Your First Image](#building-your-first-image)
+5. [Building A Small Web Site](building-a-small-website)
+6. [Building A Web Service](building-a-web-service)
+7. [Using Environment Variables](using-environment-variables)
+8. [Running MS SQL Server In A Container](#running-ms-sql-server-in-a-container)
+9. [Running Your Apps Using Kubernetes](#running-your-apps-using-kubernetes)
+10. [Scaling With Kubernetes](#scaling-with-kubernetes)
 
-### Markdown
+## Installing The Prerequisites
+You will need to make sure the following prerequisites are available on your machine:
+* docker host and command line utility
+* docker host
+* Kubernetes command line utility
+* Language compiler of your choice -- Node.js and .NET are included in this tutorial.
+* Program Editor of your choice
+* minishift  
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+In addition, a reliable internet connection is required. As always, the faster the better. Installation instructions are based on the operating system you will be using:
 
-```markdown
-Syntax highlighted code block
+[Red Hat Enterprise Linux](#red-hat-enterprise-linux)  
+[MacOS](#macos)  
+[Windows Install Instructions](#windows-install-instructions)  
 
-# Header 1
-## Header 2
-### Header 3
+## Windows Install Instructions
+W-0: Open PowerShell and run as administrator
 
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
+W-1: Install [chocolatey](https://chocolatey.org)
+```powershell
+Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
 ```
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+W-2: Install docker for Windows
+```powershell
+choco install docker-for-windows
+```
 
-### Jekyll Themes
+W-3: Install the Kubernetes command line interface
+```powershell
+choco install kubernetes-cli
+```
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/DonSchenck/containers-k8s-workshop/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+W-4: Install language compiler  
+Node.js  
+.NET
 
-### Support or Contact
+W-5: Install virtualbox
+```powershell
+choco install virtualbox
+```
 
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+W-6: Install minishift
+```powershell
+choco install minishift
+```
+
+At this point you will need to log out and back in to your Window machine.
+
+## Using Docker Hub
+
+## Running Hello World
+
+## Building Your First Image
+### What is an image?
+### How an image is built
+### Dockerfile
+### docker build
+
+## Building A Small Web Site
+### Compiling the code
+### Creating the image
+### Running the image
+### Exposing the port
+### Localhost considerations
+
+## Building A Web Service
+
+## Using Environment Variables
+
+## Running MS SQL Server In A Container
+
+## Running Your Apps Using Kubernetes
+
+## Scaling With Kubernetes
