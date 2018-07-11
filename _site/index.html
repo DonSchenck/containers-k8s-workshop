@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="/assets/css/style.css?v=73756ce67f0f03773a74b582cc0566635ef38302">
+    <link rel="stylesheet" type="text/css" href="/assets/css/print.css" media="print">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+<!-- Begin Jekyll SEO tag v2.5.0 -->
+<title>Containers and Kubernetes Workshop | containers-k8s-workshop</title>
+<meta name="generator" content="Jekyll v3.7.3" />
+<meta property="og:title" content="Containers and Kubernetes Workshop" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Code and artifacts associated with my Containers and Kubernetes workshop" />
+<meta property="og:description" content="Code and artifacts associated with my Containers and Kubernetes workshop" />
+<link rel="canonical" href="http://localhost:4000/" />
+<meta property="og:url" content="http://localhost:4000/" />
+<meta property="og:site_name" content="containers-k8s-workshop" />
+<script type="application/ld+json">
+{"description":"Code and artifacts associated with my Containers and Kubernetes workshop","name":"containers-k8s-workshop","@type":"WebSite","url":"http://localhost:4000/","headline":"Containers and Kubernetes Workshop","@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+  </head>
+
+  <body>
+    <div id="container">
+      <div class="inner">
+
+        <header>
+          <h1>Containers and Kubernetes Workshop</h1>
+          <h2>Code and artifacts associated with my Containers and Kubernetes workshop</h2>
+        </header>
+        <section id="downloads" class="clearfix">
+          
+	
+        </section>
+        <hr>
+        <section id="main_content">
+          <h1 id="containers-and-kubernetes-workshop">Containers and Kubernetes Workshop</h1>
+<h2 id="for-code-on-the-beach-2018">for Code On The Beach 2018</h2>
+
+<h3 id="about-this-workshop">About this workshop</h3>
+<p>This workshop will guide the participant to use Linux-based containers to build and run applications. In addition, managing a containerized system using Kubernetes will be introduced.</p>
+
+<h2 id="table-of-contents">Table of Contents</h2>
+<ol>
+  <li><a href="#installing-the-prerequisites">Installing The Prerequisites</a></li>
+  <li><a href="#using-docker-hub">Using Docker Hub</a></li>
+  <li><a href="#running-hello-world">Running Hello World</a></li>
+  <li><a href="#building-your-first-image">Building Your First Image</a></li>
+  <li><a href="building-a-small-website">Building A Small Web Site</a></li>
+  <li><a href="building-a-web-service">Building A Web Service</a></li>
+  <li><a href="using-environment-variables">Using Environment Variables</a></li>
+  <li><a href="#running-ms-sql-server-in-a-container">Running MS SQL Server In A Container</a></li>
+  <li><a href="#running-your-apps-using-kubernetes">Running Your Apps Using Kubernetes</a></li>
+  <li><a href="#scaling-with-kubernetes">Scaling With Kubernetes</a></li>
+</ol>
+
+<h2 id="installing-the-prerequisites">Installing The Prerequisites</h2>
+<p>You will need to make sure the following prerequisites are available on your machine:</p>
+<ul>
+  <li>docker host and command line utility</li>
+  <li>docker host</li>
+  <li>Kubernetes command line utility</li>
+  <li>Language compiler of your choice – Node.js and .NET are included in this tutorial.</li>
+  <li>Program Editor of your choice</li>
+  <li>minishift</li>
+</ul>
+
+<p>In addition, a reliable internet connection is required. As always, the faster the better. Installation instructions are based on the operating system you will be using:</p>
+
+<p><a href="#red-hat-enterprise-linux">Red Hat Enterprise Linux</a><br />
+<a href="#macos">MacOS</a><br />
+<a href="#windows-install-instructions">Windows Install Instructions</a></p>
+
+<h2 id="windows-install-instructions">Windows Install Instructions</h2>
+<p>W-0: Open PowerShell and run as administrator</p>
+
+<h3 id="w-1-install-chocolatey">W-1: Install <a href="https://chocolatey.org">chocolatey</a></h3>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">Set-ExecutionPolicy </span>Bypass -Scope <span class="k">Process</span> -Force; <span class="nb">iex</span> <span class="o">((</span><span class="nb">New-Object </span>System.Net.WebClient<span class="o">)</span>.DownloadString<span class="o">(</span><span class="s1">'https://chocolatey.org/install.ps1'</span><span class="o">))</span>
+</code></pre></div></div>
+
+<h3 id="w-2-install-docker-for-windows">W-2: Install docker for Windows</h3>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>choco install docker-for-windows
+</code></pre></div></div>
+
+<h3 id="w-3-install-the-kubernetes-command-line-interface">W-3: Install the Kubernetes command line interface</h3>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>choco install kubernetes-cli
+</code></pre></div></div>
+
+<h3 id="w-4-install-language-compiler">W-4: Install language compiler</h3>
+<h4 id="nodejs">Node.js</h4>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>choco install nodejs
+</code></pre></div></div>
+
+<h4 id="net">.NET</h4>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>choco install dotnet
+</code></pre></div></div>
+
+<h3 id="w-5-install-virtualbox">W-5: Install virtualbox</h3>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>choco install virtualbox
+</code></pre></div></div>
+
+<h3 id="w-6-install-minishift">W-6: Install minishift</h3>
+<div class="language-powershell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>choco install minishift
+</code></pre></div></div>
+
+<p>At this point you will need to log out and back in to your Window machine.</p>
+
+<h2 id="using-docker">Using Docker</h2>
+<p>Docker Hub is an online repository site where you can fetch and store images.</p>
+
+<h2 id="running-hello-world">Running Hello World</h2>
+
+<h2 id="building-your-first-image">Building Your First Image</h2>
+<h3 id="what-is-an-image">What is an image?</h3>
+<h3 id="how-an-image-is-built">How an image is built</h3>
+<h3 id="dockerfile">Dockerfile</h3>
+<h3 id="docker-build">docker build</h3>
+
+<h2 id="building-a-small-web-site">Building A Small Web Site</h2>
+<h3 id="compiling-the-code">Compiling the code</h3>
+<h3 id="creating-the-image">Creating the image</h3>
+<h3 id="running-the-image">Running the image</h3>
+<h3 id="exposing-the-port">Exposing the port</h3>
+<h3 id="localhost-considerations">Localhost considerations</h3>
+
+<h2 id="building-a-web-service">Building A Web Service</h2>
+
+<h2 id="using-environment-variables">Using Environment Variables</h2>
+
+<h2 id="running-ms-sql-server-in-a-container">Running MS SQL Server In A Container</h2>
+
+<h2 id="running-your-apps-using-kubernetes">Running Your Apps Using Kubernetes</h2>
+
+<h2 id="scaling-with-kubernetes">Scaling With Kubernetes</h2>
+
+        </section>
+
+        <footer>
+        
+          containers-k8s-workshop is maintained by <a href="http://github.com/donschenck">donschenck</a><br>
+        
+          This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.
+        </footer>
+
+      </div>
+    </div>
+
+    
+  </body>
+</html>
