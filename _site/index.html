@@ -5,7 +5,7 @@
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,maximum-scale=2">
-    <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/style.css?v=4a371866222135bc35a0be96f8dfae450737da3f">
+    <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/style.css?v=6332025cfe1a7dd8f559bbbbedf9eb57b0264647">
 
 <!-- Begin Jekyll SEO tag v2.5.0 -->
 <title>Containers and Kubernetes Workshop | containers-k8s-workshop</title>
@@ -112,9 +112,28 @@
 <p>At this point you will need to log out and back in to your Window machine.</p>
 
 <h2 id="using-docker">Using Docker</h2>
-<p>Docker Hub is an online repository site where you can fetch and store images.</p>
+<p>Docker Hub is an online registry where you can fetch and store images. You can create an account at <a href="hub.docker.com">hub.docker.com</a> and then use that account to pull and store images.</p>
+
+<p>Note that the user id is case-sensitive.</p>
+
+<p>Docker Hub is where you will most likely find official images. For example, the official image for MySQL is stored here.</p>
+
+<p>This is also where documentation for an image <em>should</em> be found.</p>
+
+<div style="background-color:black;color:white;font-weight:bold;">&nbsp;EXERCISE</div>
+<p>Find the MySQL image on Docker Hub.</p>
 
 <h2 id="running-hello-world">Running Hello World</h2>
+<p>You can run images in a container even if the image is not in your local registry. Note that “local” refers to your docker host, which does not necessarily need to be your PC. You might, for example, be using a host at a remote location such as a server, on Azure, etc.</p>
+
+<p>If the image is not in your registry, docker will automagically attempt to pull the image from docker hub.</p>
+
+<p>To see an example of this, run an image without first “pulling” it.</p>
+
+<div style="background-color:black;color:white;font-weight:bold;">&nbsp;EXERCISE</div>
+<p>Run the official docker hello-world image:</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker run hello-world
+</code></pre></div></div>
 
 <h2 id="building-your-first-image">Building Your First Image</h2>
 <h3 id="what-is-an-image">What is an image?</h3>

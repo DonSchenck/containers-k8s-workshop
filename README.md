@@ -73,12 +73,35 @@ choco install minishift
 At this point you will need to log out and back in to your Window machine.
 
 ## Using Docker 
-Docker Hub is an online repository site where you can fetch and store images.
+Docker Hub is an online registry where you can fetch and store images. You can create an account at [hub.docker.com](hub.docker.com) and then use that account to pull and store images.
+
+Note that the user id is case-sensitive.
+
+Docker Hub is where you will most likely find official images. For example, the official image for MySQL is stored here.
+
+This is also where documentation for an image *should* be found.
+
+<div style="background-color:black;color:white;font-weight:bold;">&nbsp;EXERCISE</div>  
+Find the MySQL image on Docker Hub.
 
 ## Running Hello World
+You can run images in a container even if the image is not in your local registry. Note that "local" refers to your docker host, which does not necessarily need to be your PC. You might, for example, be using a host at a remote location such as a server, on Azure, etc.
+
+If the image is not in your registry, docker will automagically attempt to pull the image from docker hub.
+
+To see an example of this, run an image without first "pulling" it.
+
+<div style="background-color:black;color:white;font-weight:bold;">&nbsp;EXERCISE</div>
+Run the official docker hello-world image:
+```bash
+docker run hello-world
+```
+
 
 ## Building Your First Image
 ### What is an image?
+An image is a package of bits that are executable by a container runtime. An image is immutable -- it cannot be changed -- and is inactive until it is executed. When it is run, it runs in (or becomes, from the standpoint of conversation) a "container". An image is a rest; it becomes a container when it's running. An analogy would be a class that, once instantiated, becomes an object.  
+
 ### How an image is built
 ### Dockerfile
 ### docker build
