@@ -128,6 +128,20 @@ You can even build your own intermediate images. For example, instead building y
 
 ### Dockerfile
 The Dockerfile is a list of settings and instructions that are used to direct the `docker build` process.
+
+Here's a Dockerfile to build a web site image.
+.NET
+Node.js
+```
+FROM node:8
+WORKDIR /usr/src/app
+COPY package*.json ./
+RUN npm install
+COPY . .
+EXPOSE 8080
+CMD [ "npm", "start" ]
+```
+
 ### docker build
 
 ## Building A Small Web Site
