@@ -124,6 +124,11 @@ You could, however, start with `registry.access.redhat.com/rhel`, which would be
 
 [Note: In order to use a Red Hat image, you need a Red Hat subscription]
 
+<hr>
+## Sidenote: Get your zero-cost copy of Red Hat Enterprise Linux
+If you'd like a zero-cost developer copy of Red Hat Enterprise Linux, and we as access to a number of cheat sheets, books, developement tools, and more, simply create an account at developer.redhat.com. It's free and takes only seconds to sign up with your email and a password.
+<hr>
+
 You can even build your own intermediate images. For example, instead building your end-to-end RHEL-nginx-your-website image, you could build an image with RHEL and nginx -- let's call it "myrhelnginx:v1", and then use *that* image as the starting point for all of your nginx website images.
 
 ### Dockerfile
@@ -141,6 +146,27 @@ COPY . .
 EXPOSE 8080
 CMD [ "npm", "start" ]
 ```
+The commands are run when the image is being built, *with the exception of* the `CMD` command. The `CMD` command is what is executed when you start the image in a container (i.e. `docker run...`).
+
+#### Dockerfile Contents Explained  
+
+`FROM` is the base or starting image for the image to be built. In this case, we're starting with a Linux machine with Node version 8 slready installed. For the purposes of this example, we aren't particularlly concerned with which distribution of Linux is being used. If we check the information for this image on Docker Hub, we can find that it's using Debian Linux.  
+
+If we wanted to enforce the version of Linux -- say, to use RHEL -- we'd need to start with that (RHEL) as our base image and then install node (and any necessary prerequisites) to get to a level of Linux running Node version 8.  
+
+As you can see, there are options and tradeoffs when choosing your starting (FROM) image.
+
+`WORKDIR` is simply the directory in which you'll be working during this build. In our example, the next command (`COPY`) will consider that value of the previous `WORKDIR` command.
+
+`COPY`
+
+`RUN`
+
+`COPY`
+
+`EXPOSE`
+
+`CMD`
 
 ### docker build
 
