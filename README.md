@@ -124,10 +124,13 @@ You could, however, start with `registry.access.redhat.com/rhel`, which would be
 
 [Note: In order to use a Red Hat image, you need a Red Hat subscription]
 
-<hr>
-## Sidenote: Get your zero-cost copy of Red Hat Enterprise Linux
-If you'd like a zero-cost developer copy of Red Hat Enterprise Linux, and we as access to a number of cheat sheets, books, developement tools, and more, simply create an account at developer.redhat.com. It's free and takes only seconds to sign up with your email and a password.
-<hr>
+<hr>  
+
+##### Sidenote: Get your zero-cost copy of Red Hat Enterprise Linux  
+If you'd like a zero-cost developer copy of Red Hat Enterprise Linux, and we as access to a number of cheat sheets, books, developement tools, and more, simply create an account at developer.redhat.com. It's free and takes only seconds to sign up with your email and a password.  
+
+<hr>  
+
 
 You can even build your own intermediate images. For example, instead building your end-to-end RHEL-nginx-your-website image, you could build an image with RHEL and nginx -- let's call it "myrhelnginx:v1", and then use *that* image as the starting point for all of your nginx website images.
 
@@ -158,15 +161,13 @@ As you can see, there are options and tradeoffs when choosing your starting (FRO
 
 `WORKDIR` is simply the directory in which you'll be working during this build. In our example, the next command (`COPY`) will consider that value of the previous `WORKDIR` command.
 
-`COPY`
+`COPY` will, as you probably can guess, copies files from your host to the image.
 
-`RUN`
+`RUN` will run the specified command inside the image *at build time*. That is, it is only executed during `docker build`, and *not* during `docker run`.
 
-`COPY`
+`EXPOSE` exposes the port number specified so it can be accessed from outside the container during runtime. For example, if your nginx web site monitors port 8080 for traffic, then it must be exposed. Note -- as noted later in this tutorial -- the exposed port does not need to be the port used at runtime; you have the option of mapping an image's runtime port to a container's runtime port.
 
-`EXPOSE`
-
-`CMD`
+`CMD` is what is carried out when you run the image in a container, i.e. `docker run`.
 
 ### docker build
 
