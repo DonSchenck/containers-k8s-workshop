@@ -170,7 +170,7 @@ As you can see, there are options and tradeoffs when choosing your starting (FRO
 `CMD` is what is carried out when you run the image in a container, i.e. `docker run`.
 
 <div style="background-color:black;color:white;font-weight:bold;">&nbsp;EXERCISE</div>
-Using the editor of your choice, create the appropriate Dockerfile in the directory of you application. Bonus: Add the MAINTAINER tag.
+Using the editor of your choice, create the appropriate Dockerfile in the directory of you application. Bonus: Add the MAINTAINER instruction.
 
 ### docker build
 
