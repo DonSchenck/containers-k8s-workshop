@@ -98,7 +98,6 @@ docker run hello-world
 ```
 Example output:
 ```
-➜  containers-k8s-workshop git:(gh-pages) docker run hello-world
 Unable to find image 'hello-world:latest' locally
 latest: Pulling from library/hello-world
 9db2ca6ccae0: Pull complete 
@@ -175,7 +174,7 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 RUN npm install
 COPY . .
-EXPOSE 8080
+EXPOSE 3000
 CMD [ "npm", "start" ]
 ```
 The commands are run when the image is being built, *with the exception of* the `CMD` command. The `CMD` command is what is executed when you start the image in a container (i.e. `docker run...`).
@@ -201,6 +200,57 @@ As you can see, there are options and tradeoffs when choosing your starting (FRO
 <div style="background-color:black;color:white;font-weight:bold;">&nbsp;EXERCISE</div>
 Using the editor of your choice, create the appropriate Dockerfile in the directory of you application. Bonus: Add the MAINTAINER instruction.
 
+```
+docker build -t web .
+```
+```
+docker run -p 3000:3000 web
+```
+```
+Ctlr-C
+```
+```
+docker ps
+```
+``` 
+docker ps -a
+```
+```
+docker run -d -p 3000:3000 web
+```
+Open `localhost:3000` in your browser. Why isn't it working?
+Get the container name:
+```
+docker ps
+```
+```
+docker logs {container_name}
+```
+It's not working because the code is monitoring the port on "localhost", and localhost is the Linux container, NOT the host (i.e. your PC). You *could* change the source code to monitor address 0.0.0.0 (or *), build a new docker image, and run the new image.
+
+Node: Alter the file bin/www
+C#: Alter the file Program.cs
+
+OR
+
+Start docker with environment variable(s) set:
+```
+docker run -d -p 3000:3000 -e HOST='0.0.0.0' --name web webtest
+```
+
+
+Did you get an error similar to the following?
+```
+Error response from daemon: driver failed programming external connectivity on endpoint wizardly_meitner (edb5effff25f5454e96c533b29b7927b20f27899cd54773f032a474b36d95551): Bind for 0.0.0.0:3000 failed: port is already allocated
+Error: failed to start containers: wizardly_meitner
+```
+This is because your previously-started container (from your previous `docker run...`) is still running. Use the commmand ```docker ps``` to see all your running containers, locate your previous container, and use the ```docker stop``` command to stop execution.
+```
+docker stop reverent_mcclintock
+```
+docker run -d -p 3000:3000 --name myweb web
+docker run -d -p 3000:3000 --name myweb --rm web
+
 ### docker build
 
 ## Building A Small Web Site
@@ -219,3 +269,7 @@ Using the editor of your choice, create the appropriate Dockerfile in the direct
 ## Running Your Apps Using Kubernetes
 
 ## Scaling With Kubernetes
+
+## Suggested Reading
+The Docker Book
+
