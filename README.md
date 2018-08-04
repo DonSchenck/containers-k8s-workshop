@@ -92,11 +92,13 @@ If the image is not in your registry, docker will automagically attempt to pull 
 To see an example of this, run an image without first "pulling" it.
 
 <div style="background-color:black;color:white;font-weight:bold;">&nbsp;EXERCISE</div>
-Run the official docker hello-world image:
+Run the official docker hello-world image:  
+
 ```bash
 docker run hello-world
 ```
-Example output:
+Example output:  
+
 ```
 Unable to find image 'hello-world:latest' locally
 latest: Pulling from library/hello-world
@@ -125,14 +127,20 @@ Share images, automate workflows, and more with a free Docker ID:
 For more examples and ideas, visit:
  https://docs.docker.com/engine/userguide/
 ```
+<div style="background-color:black;color:white;font-weight:bold;">&nbsp;EXERCISE</div>
+As suggested in the above output, run an Ubuntu container on your machine. It's literally that simple to get a Linux container running.
+
+```bash
+docker run -it ubuntu bash
+```
 
 ## Building Your First Image
 ### What is an image?
-An image is a package of bits that are executable by a container runtime. An image is immutable -- it cannot be changed -- and is inactive until it is executed. When it is run, it runs in (or becomes, from the standpoint of conversation) a "container". An image is a rest; it becomes a container when it's running. An analogy would be a class that, once instantiated, becomes an object. An image can be saved, loaded, stored, etc.
+An image is a package of bits that are executable by a container runtime. An image is immutable -- it cannot be changed -- and is inactive until it is executed. When it is run, it runs in (or becomes, from the standpoint of conversation) a "container". An image is at rest; it becomes a container when it's running. An analogy would be a class that, once instantiated, becomes an object. An image can be saved, loaded, stored, etc.
 
-An image is a part of what is known as "Immutable Infrastructure", the idea that you replace parts of your system rather than change them.
+An image is a part of what is known as "Immutable Infrastructure", the idea that you replace parts of your system rather than change them. This is a key aspect of microservices.
 
-Images are namespaced and versioned by use of a tagging system. For example, a "Hello World" application might be stored in your own registry, with a version tag such as this: donschenck/helloworld:v2.0. The namespace is "donschenck", the image name is "helloworld", and the tag is "v2.0". The tag can be any string you chose, and if excluded defaults to "latest".
+Images are namespaced and versioned by use of a tagging system. For example, a "Hello World" application might be stored in your own registry, with a version tag such as this: `donschenck/helloworld:v2.0`. The namespace is "donschenck", the image name is "helloworld", and the tag is "v2.0". The tag can be any string you chose, and if excluded defaults to "latest".
 
 Tagging is very important, is it allows you to have multiple versions of the same image. This is especially important when you are using Kubernetes and may have different versions running at the same time.  
 
@@ -146,16 +154,20 @@ For this workshop, we'll be using `docker build` and a Dockerfile.
 
 Images are built in layers. Further, it is the default behaviour to cache the layers. This is important to consider, as it is often wise to build in a sequence from most-stable to least-stable layers. That way, if you need to rebuild one part (e.g. you changed your code and want to build a new version), it won't be necessary to reload all of the layers.
 
-The beginning layer may, itself, be an image that contains multiple layers. For example, if you want to build an images that runs an Nginx web site, you may wish to start with the image `nginx:1.15.1`, which itself is built using the Debian Linux distribution. In this example, you don't have control over the operating system -- nginx chose Debian.
+The beginning layer itself is an image that typically contains multiple layers. For example, if you want to build an image that runs an Nginx web site, you may wish to start with the image `nginx:1.15.1`, which itself is built using the Debian Linux distribution. In this example, you don't have control over the operating system -- nginx chose Debian.
+
+<div style="background-color:black;color:white;font-weight:bold;">&nbsp;EXERCISE</div>
+Find the image `nginx:1.15.1` on docker hub and locate the documentation that indicates that Debian is the Linux distro being used. Hint: The Dockerfile is where it is specified.
+
 
 You could, however, start with `registry.access.redhat.com/rhel`, which would be the latest version of Red Hat Enterprise Linux (RHEL). In this case, you would then need to install nginx on top of RHEL, as well as any other necessary prerequisites.
 
-[Note: In order to use a Red Hat image, you need a Red Hat subscription]
+[Note: In order to use a Red Hat image, you must build your image on a RHEL-based machine or VM and will need a Red Hat subscription.]
 
 <hr>  
 
 ##### Sidenote: Get your zero-cost copy of Red Hat Enterprise Linux  
-If you'd like a zero-cost developer copy of Red Hat Enterprise Linux, and we as access to a number of cheat sheets, books, developement tools, and more, simply create an account at developer.redhat.com. It's free and takes only seconds to sign up with your email and a password.  
+If you'd like a zero-cost developer copy of Red Hat Enterprise Linux, and access to a number of cheat sheets, books, developement tools, and more, simply create an account at developer.redhat.com. It's free and takes only seconds to sign up with your email and a password.  
 
 <hr>  
 
@@ -165,9 +177,8 @@ You can even build your own intermediate images. For example, instead building y
 ### Dockerfile
 The Dockerfile is a list of settings and instructions that are used to direct the `docker build` process.
 
-Here's a Dockerfile to build a web site image.
-.NET
-Node.js
+Here's a Dockerfile to build a web site image. This example uses Node.js. Note that this is *not* representative of a production-ready image; this is purposely kept simple, using a developer-based command (`npm start`). You will find that some production-ready Dockerfiles can get quite complex:
+
 ```
 FROM node:8
 WORKDIR /usr/src/app
@@ -181,15 +192,15 @@ The commands are run when the image is being built, *with the exception of* the 
 
 #### Dockerfile Contents Explained  
 
-`FROM` is the base or starting image for the image to be built. In this case, we're starting with a Linux machine with Node version 8 slready installed. For the purposes of this example, we aren't particularlly concerned with which distribution of Linux is being used. If we check the information for this image on Docker Hub, we can find that it's using Debian Linux.  
+`FROM` is the base or starting image for the image to be built. In this case, we're starting with a Linux machine with Node version 8 already installed. For the purposes of this example, we aren't particularlly concerned with which distribution of Linux is being used. If we check the information for this image on Docker Hub, we can find that it's using Debian Linux.  
 
-If we wanted to enforce the version of Linux -- say, to use RHEL -- we'd need to start with that (RHEL) as our base image and then install node (and any necessary prerequisites) to get to a level of Linux running Node version 8.  
+If we wanted to enforce the version of Linux -- say, to use RHEL -- we'd need to start with that (RHEL) as our base image and then install node (and all necessary prerequisites) to get to a level of Red Hat Enterprise Linux running Node version 8.  
 
 As you can see, there are options and tradeoffs when choosing your starting (FROM) image.
 
 `WORKDIR` is simply the directory in which you'll be working during this build. In our example, the next command (`COPY`) will consider that value of the previous `WORKDIR` command.
 
-`COPY` will, as you probably can guess, copies files from your host to the image.
+`COPY` will, as you probably can guess, copy files from your host to the image.
 
 `RUN` will run the specified command inside the image *at build time*. That is, it is only executed during `docker build`, and *not* during `docker run`.
 
@@ -200,9 +211,6 @@ As you can see, there are options and tradeoffs when choosing your starting (FRO
 <div style="background-color:black;color:white;font-weight:bold;">&nbsp;EXERCISE</div>
 Using the editor of your choice, create the appropriate Dockerfile in the directory of you application. Bonus: Add the MAINTAINER instruction.
 
-```
-docker build -t web .
-```
 ```
 docker run -p 3000:3000 web
 ```
@@ -252,6 +260,27 @@ docker run -d -p 3000:3000 --name myweb web
 docker run -d -p 3000:3000 --name myweb --rm web
 
 ### docker build
+The `docker build` command will use a Dockerfile to create an images. The following is an example of a `docker build` command.
+
+In this example, the tag is "myimagename". Because any versioning is not specified, this will be built as "myimagename:latest".
+
+```
+docker build -t myimagename .
+```
+The final part of the command, the period (".") tells the command to use the Dockerfile found in the current directory. It is common, although not necessary, to have the Dockerfile in the home directory of your project. You may have very good reasons to have multiple Dockerfiles, in which case you would specify the Dockerfile by using the `-f` flag:
+```
+docker build -t myimagename -f Dockerfile2
+```
+The `docker build`, as you might imagine, is very powerful with many options. For this workshop, we'll keep it simple, but if you want to learn more, see [the docker build documentation](https://docs.docker.com/engine/reference/commandline/build/).
+
+<div style="background-color:black;color:white;font-weight:bold;">&nbsp;EXERCISE</div>
+Go ahead and build your image. Give it any name you wish. Check to see that it is built (using the `docker images` command), and note the size of the image.
+
+```
+docker build -t myimagename .
+docker images
+```
+
 
 ## Building A Small Web Site
 ### Compiling the code
