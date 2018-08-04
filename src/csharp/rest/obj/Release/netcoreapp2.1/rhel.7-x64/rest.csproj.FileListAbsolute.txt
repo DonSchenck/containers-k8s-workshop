@@ -1,0 +1,14 @@
+/Users/dschenck/containers-k8s-workshop/src/csharp/rest/bin/Release/netcoreapp2.1/rhel.7-x64/rest.deps.json
+/Users/dschenck/containers-k8s-workshop/src/csharp/rest/bin/Release/netcoreapp2.1/rhel.7-x64/rest.runtimeconfig.json
+/Users/dschenck/containers-k8s-workshop/src/csharp/rest/bin/Release/netcoreapp2.1/rhel.7-x64/rest.runtimeconfig.dev.json
+/Users/dschenck/containers-k8s-workshop/src/csharp/rest/bin/Release/netcoreapp2.1/rhel.7-x64/rest.dll
+/Users/dschenck/containers-k8s-workshop/src/csharp/rest/bin/Release/netcoreapp2.1/rhel.7-x64/rest.pdb
+/Users/dschenck/containers-k8s-workshop/src/csharp/rest/obj/Release/netcoreapp2.1/rhel.7-x64/rest.csprojAssemblyReference.cache
+/Users/dschenck/containers-k8s-workshop/src/csharp/rest/obj/Release/netcoreapp2.1/rhel.7-x64/rest.csproj.CoreCompileInputs.cache
+/Users/dschenck/containers-k8s-workshop/src/csharp/rest/obj/Release/netcoreapp2.1/rhel.7-x64/rest.RazorAssemblyInfo.cache
+/Users/dschenck/containers-k8s-workshop/src/csharp/rest/obj/Release/netcoreapp2.1/rhel.7-x64/rest.RazorAssemblyInfo.cs
+/Users/dschenck/containers-k8s-workshop/src/csharp/rest/obj/Release/netcoreapp2.1/rhel.7-x64/rest.AssemblyInfoInputs.cache
+/Users/dschenck/containers-k8s-workshop/src/csharp/rest/obj/Release/netcoreapp2.1/rhel.7-x64/rest.AssemblyInfo.cs
+/Users/dschenck/containers-k8s-workshop/src/csharp/rest/obj/Release/netcoreapp2.1/rhel.7-x64/rest.RazorTargetAssemblyInfo.cache
+/Users/dschenck/containers-k8s-workshop/src/csharp/rest/obj/Release/netcoreapp2.1/rhel.7-x64/rest.dll
+/Users/dschenck/containers-k8s-workshop/src/csharp/rest/obj/Release/netcoreapp2.1/rhel.7-x64/rest.pdb

@@ -246,7 +246,7 @@ Error: failed to start containers: wizardly_meitner
 ```
 This is because your previously-started container (from your previous `docker run...`) is still running. Use the commmand ```docker ps``` to see all your running containers, locate your previous container, and use the ```docker stop``` command to stop execution.
 ```
-docker stop reverent_mcclintock
+docker stop {container_name}
 ```
 docker run -d -p 3000:3000 --name myweb web
 docker run -d -p 3000:3000 --name myweb --rm web
@@ -265,11 +265,20 @@ docker run -d -p 3000:3000 --name myweb --rm web
 ## Using Environment Variables
 
 ## Running MS SQL Server In A Container
+As a developer, being able to quickly get a database server up and running can be important. With Linux containers, you can start a database server in seconds.  
+
+Note that, because Linux containers are ephemeral -- the conta
+
+<div style="background-color:black;color:white;font-weight:bold;">&nbsp;EXERCISE</div>
+Run Microsoft SQL Server in a Linux container. Hint: Use a web search to find the instructions.
+
+<div style="background-color:black;color:white;font-weight:bold;">&nbsp;EXERCISE</div>
+Run MySQL in a Linux container.
 
 ## Running Your Apps Using Kubernetes
 
 ## Scaling With Kubernetes
 
 ## Suggested Reading
-The Docker Book
+[The Docker Book](https://dockerbook.com/)
 
