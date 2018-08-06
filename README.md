@@ -70,9 +70,24 @@ choco install virtualbox
 choco install minishift
 ```
 
-At this point you will need to log out and back in to your Window machine.
+### W-7: Install git
+```powershell
+choco install git
+```
+You may need to log out and back in for git to work.
 
-## Using Docker 
+
+### W-8: Clone the workshop repository
+```powershell
+git clone https://github.com/donschenck/containers-k8s-workshop.git
+```
+Note the directory created; this is your workshop home directory. It will be referred to as $WORKSHOP_HOME in the following text.
+
+## Workshop directory
+In order to execute the code mentioned in this workshop, you must be in the directory `$WORKSHOP_HOME\src\nodejs` under your home directory for the repository. 
+
+
+## Using Docker Hub
 Docker Hub is an online registry where you can fetch and store images. You can create an account at [hub.docker.com](hub.docker.com) and then use that account to *pull* and *push* images.
 
 Note that the user id is case-sensitive.
@@ -209,14 +224,8 @@ As you can see, there are options and tradeoffs when choosing your starting (FRO
 `CMD` is what is carried out when you run the image in a container, i.e. `docker run`.
 
 <div style="background-color:black;color:white;font-weight:bold;">&nbsp;EXERCISE</div>
-Using the editor of your choice, create the appropriate Dockerfile in the directory of you application. Bonus: Add the MAINTAINER instruction.
+Move into the directory `$WORKSHOP_HOME\src\nodejs\web`. Using the editor of your choice, create the appropriate Dockerfile in the directory of your application. Bonus: Add the MAINTAINER instruction.
 
-```
-docker run -p 3000:3000 web
-```
-```
-Ctlr-C
-```
 ```
 docker ps
 ```
@@ -286,6 +295,40 @@ docker images
 ### Compiling the code
 ### Creating the image
 ### Running the image
+```
+docker run web
+```
+Use your browser to visit `localhost:3000`. Notice that it does not work. In the Dockerfile, we exposed port 3000 -- which is used by the program -- but the `docker run` command hasn't mapped the port 3000 of the container to a port on the host. This is done using the `-p` flag with the `docker run` command. Note that you do *not* need to use the "host part" of the `-p` flag, but in that case, docker will assign a port number. In fact, let's try it.
+
+First, stop the running container by using one of the following:  
+* Press Ctrl-C at the terminal session (you may need press it multiple times)
+* Open a second terminal session, run `docker ps`, find the name of the container, and then run `docker stop {container_name}`
+
+If you haven't already done so, open a second terminal session. We'll use this session to inspect any containers that are running interactively.
+
+Now, run the image and allow the runtime to randomly assign a host port:
+
+```
+docker run -p 3000 web
+```
+
+In the second terminal session, run `docker ps` and you can see which port has been assigned to the container.
+
+Let's stop that container and run the image in a container where *we* control the port assignment.
+
+<div style="background-color:black;color:white;font-weight:bold;">&nbsp;EXERCISE</div>
+Based on what you've learned in the past few minutes, stop the running container. Hint: `docker ps` is involved.
+
+
+```
+docker run -p 3000:3000 web
+```
+
+
+```
+Ctlr-C
+```
+
 ### Exposing the port
 ### Localhost considerations
 
