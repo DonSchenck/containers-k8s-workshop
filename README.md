@@ -243,17 +243,6 @@ docker ps
 ```
 docker logs {container_name}
 ```
-It's not working because the code is monitoring the port on "localhost", and localhost is the Linux container, NOT the host (i.e. your PC). You *could* change the source code to monitor address 0.0.0.0 (or *), build a new docker image, and run the new image.
-
-Node: Alter the file bin/www
-C#: Alter the file Program.cs
-
-OR
-
-Start docker with environment variable(s) set:
-```
-docker run -d -p 3000:3000 -e HOST='0.0.0.0' --name web webtest
-```
 
 
 Did you get an error similar to the following?
@@ -298,11 +287,15 @@ docker images
 ```
 docker run web
 ```
-Use your browser to visit `localhost:3000`. Notice that it does not work. In the Dockerfile, we exposed port 3000 -- which is used by the program -- but the `docker run` command hasn't mapped the port 3000 of the container to a port on the host. This is done using the `-p` flag with the `docker run` command. Note that you do *not* need to use the "host part" of the `-p` flag, but in that case, docker will assign a port number. In fact, let's try it.
+Use your browser to visit `localhost:3000`.   
+**Notice that it does not work.**  
+Why? In the Dockerfile, we exposed port 3000 -- which is used by the program -- but the `docker run` command hasn't mapped the port 3000 of the container to a port on the host. This is done using the `-p` flag with the `docker run` command. Note that you do *not* need to use the "host part" of the `-p` flag, but in that case, docker will assign a port number. In fact, let's try it.
 
 First, stop the running container by using one of the following:  
 * Press Ctrl-C at the terminal session (you may need press it multiple times)
 * Open a second terminal session, run `docker ps`, find the name of the container, and then run `docker stop {container_name}`
+
+### Exposing the port
 
 If you haven't already done so, open a second terminal session. We'll use this session to inspect any containers that are running interactively.
 
@@ -319,22 +312,47 @@ Let's stop that container and run the image in a container where *we* control th
 <div style="background-color:black;color:white;font-weight:bold;">&nbsp;EXERCISE</div>
 Based on what you've learned in the past few minutes, stop the running container. Hint: `docker ps` is involved.
 
+Let's run the web image in a container and map the container port 3000 to the host port 3000. Keeping the port numbers the same is a very common practice when using containers.
+
+(Hmmmm ... what happens when you try to run multiple containers on the same port?) <-- More on this later.
 
 ```
 docker run -p 3000:3000 web
 ```
+Now point your browser to `localhost:3000`.
 
+**It still does not work!**
+
+Let's stop the container and investigate.
 
 ```
-Ctlr-C
+docker ps 
+docker stop {container_name}
 ```
 
-### Exposing the port
 ### Localhost considerations
+Quite simply, the problem is "localhost". The "localhost" in your container is the container itself, *not* your host PC. So when you run the container and then point your host browser to "localhost", you won't see it.
 
-## Building A Web Service
+It's not working because the code is monitoring the port on "localhost", and localhost is the Linux container, NOT the host (i.e. your PC). You *could* change the source code to monitor address 0.0.0.0 (or *), build a new docker image, and run the new image.
+
+Node: Alter the file bin/www
+C#: Alter the file Program.cs
+
+OR
+
 
 ## Using Environment Variables
+Start docker with environment variable(s) set:
+```
+docker run -d -p 3000:3000 -e HOST='0.0.0.0' --name web webtest
+```
+```
+docker run -d -p 5000:5000 -e ASPNETCORE_URLS='0.0.0.0:5000' --name web webtest
+```
+
+## Building A Web Service
+<div style="background-color:black;color:white;font-weight:bold;">&nbsp;EXERCISE</div>
+Create a web service and run it on a container.
 
 ## Running MS SQL Server In A Container
 As a developer, being able to quickly get a database server up and running can be important. With Linux containers, you can start a database server in seconds.  
