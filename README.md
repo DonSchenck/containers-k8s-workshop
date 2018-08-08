@@ -288,11 +288,15 @@ docker images
 docker run web
 ```
 Use your browser to visit `localhost:3000`.   
+
 **Notice that it does not work.**  
 Why? In the Dockerfile, we exposed port 3000 -- which is used by the program -- but the `docker run` command hasn't mapped the port 3000 of the container to a port on the host. This is done using the `-p` flag with the `docker run` command. Note that you do *not* need to use the "host part" of the `-p` flag, but in that case, docker will assign a port number. In fact, let's try it.
 
 First, stop the running container by using one of the following:  
-* Press Ctrl-C at the terminal session (you may need press it multiple times)
+* Press Ctrl-C at the terminal session (you may need press it multiple times)  
+
+or  
+
 * Open a second terminal session, run `docker ps`, find the name of the container, and then run `docker stop {container_name}`
 
 ### Exposing the port
@@ -310,7 +314,9 @@ In the second terminal session, run `docker ps` and you can see which port has b
 Let's stop that container and run the image in a container where *we* control the port assignment.
 
 <div style="background-color:black;color:white;font-weight:bold;">&nbsp;EXERCISE</div>
-Based on what you've learned in the past few minutes, stop the running container. Hint: `docker ps` is involved.
+Based on what you've learned in the past few minutes, stop the running container.  
+
+Hint: `docker ps` is involved.
 
 Let's run the web image in a container and map the container port 3000 to the host port 3000. Keeping the port numbers the same is a very common practice when using containers.
 
@@ -352,23 +358,115 @@ docker run -d -p 5000:5000 -e ASPNETCORE_URLS='0.0.0.0:5000' --name web webtest
 
 ## Building A Web Service
 <div style="background-color:black;color:white;font-weight:bold;">&nbsp;EXERCISE</div>
-Create a web service and run it on a container.
+Create a web service and run it on a container. An HTTP GET operation should return the HOSTNAME for the application. Name the image "rest" -- we'll be using this in the Kubernetes portion of this workshop.
+
+Example:
+```
+curl localhost:3000
+Application 'rest' (v1) hostname is d2fa43b00985
+```
 
 ## Running MS SQL Server In A Container
 As a developer, being able to quickly get a database server up and running can be important. With Linux containers, you can start a database server in seconds.  
 
-Note that, because Linux containers are ephemeral -- the conta
+Note that, because Linux containers are ephemeral, the container loses all local data when it is shut down. This is not a production environment, but is useful for a developer needing a database.
 
 <div style="background-color:black;color:white;font-weight:bold;">&nbsp;EXERCISE</div>
 Run Microsoft SQL Server in a Linux container. Hint: Use a web search to find the instructions.
+  
+   
+
 
 <div style="background-color:black;color:white;font-weight:bold;">&nbsp;EXERCISE</div>
 Run MySQL in a Linux container.
 
 ## Running Your Apps Using Kubernetes
+Earlier, we mentioned port conflicts when running more than one container on a given port. Just one of the powers of Kubernetes is that it will solve this problem.
+
+<div style="background-color:black;color:white;font-weight:bold;">&nbsp;EXERCISE</div>
+Create two images of your 'rest' application. Label them 'rest:v1' and 'rest:v2'. Make sure the text output in each is different, e.g. v1 and v2.  
+
+Let’s say we want to run three containers of rest:v1. Would could use the following commands:
+```
+docker run -d -p 3000:3000 —name rest1 rest
+docker run -d -p 3001:3000 —name rest2 rest
+docker run -d -p 3002:3000 —name rest3 rest
+```
+
+<div style="background-color:black;color:white;font-weight:bold;">&nbsp;EXERCISE</div>
+Go ahead and do this (above). This will give you a feel for the hassle of this approach. Imagine if this was 100 instances of 'rest:v1'.
+
+Run `kubectl version` to see which version of the Kubernetes command line tool you're running. If this does not work:
+1. Make sure you've installed kubectl
+2. Make sure it's in your PATH
+
+Created a Kubernetes namespace:
+```
+kubectl create -f $WORKSHOP_HOME/kubedemo-namespace.yaml
+```
+In Kubernetes, your application containers run in "pods". You scale up and down by changing the number of pods.
+
+Create a pod:
+```
+kubectl --namespace=kubedemo run rest --image=rest:v1 --port=3000
+```
+
+Once a pod is up and running, you need to expose your web service:
+```
+kubectl --namespace=kubedemo expose deployment --port=3000 rest --type=LoadBalancer
+```
+Take a look at what we have:
+```
+kubectl —namespace=kubedemo get pods
+kubectl —namespace=kubedemo get services
+```
+
+You can see your pod using `curl`:
+```
+curl {ip_address_of_service}
+```
 
 ## Scaling With Kubernetes
+Now, finally, we can scale up. Let's make sure three copies of 
+'rest:v1' are running at the same time, *on the same port*. Kubernetes takes care of discovery and load balancing and port conflicts.
+
+```
+kubectl --namespace=kubedemo scale deployment rest --replicas=3
+```
+
+If you run multiple curls, you'll see that you have three different hosts running on the same IP address and port.
+
+Run the following multiple times:
+```
+curl {ip_address_of_service}
+```
+## Rolling Update With Kubernetes
+Finally, let's update from v1 to v2 without any downtown. Kubernetes will perform an automatic Rolling Update.
+
+```
+kubectl --namespace=kubedemo set image deployment/rest rest=rest:v2
+```
+To see the change, run the following multiple times:
+```
+curl {ip_address_of_service}
+```
+
+<div style="background-color:black;color:white;font-weight:bold;">&nbsp;EXERCISE</div>
+Create a looping script that runs the `curl` command against your service. After that is running in a separate terminal session, you can run the final step.
+
+Delete a pod and watch Kubernetes auto-heal it.
+```
+kubectl --namespace=kubedemo get pods
+kubectl delete pod {id_of_one_pod_from_previous_command}
+```
+
+
+## YOU'VE DONE IT!
+You've completed the workshop. Congratulations. You're ready to start down the path to using containers and managing them with Kubernetes. As an aside: Red Hat OpenShift provides a higher-level experience with Kubernetes and provides a web dashboard.
 
 ## Suggested Reading
 [The Docker Book](https://dockerbook.com/)
-
+developers.redhat.com  
+bit.ly/istio-tutorial  
+bit.ly/faas-tutorial  
+learn.openshift.com
