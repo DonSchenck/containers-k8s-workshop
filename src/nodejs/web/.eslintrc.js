@@ -23,6 +23,10 @@ module.exports = {
         "semi": [
             "error",
             "always"
+        ],
+        "curly": [
+            "error",
+            "multi-line"
         ]
     }
 };
