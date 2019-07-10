@@ -1,0 +1,14 @@
+C:\Users\dschenck\src\github\donschenck\containers-k8s-workshop\src\csharp\getOneCustomer\bin\Debug\netcoreapp2.2\getOneCustomer.deps.json
+C:\Users\dschenck\src\github\donschenck\containers-k8s-workshop\src\csharp\getOneCustomer\bin\Debug\netcoreapp2.2\getOneCustomer.runtimeconfig.json
+C:\Users\dschenck\src\github\donschenck\containers-k8s-workshop\src\csharp\getOneCustomer\bin\Debug\netcoreapp2.2\getOneCustomer.runtimeconfig.dev.json
+C:\Users\dschenck\src\github\donschenck\containers-k8s-workshop\src\csharp\getOneCustomer\bin\Debug\netcoreapp2.2\getOneCustomer.dll
+C:\Users\dschenck\src\github\donschenck\containers-k8s-workshop\src\csharp\getOneCustomer\bin\Debug\netcoreapp2.2\getOneCustomer.pdb
+C:\Users\dschenck\src\github\donschenck\containers-k8s-workshop\src\csharp\getOneCustomer\obj\Debug\netcoreapp2.2\getOneCustomer.csprojAssemblyReference.cache
+C:\Users\dschenck\src\github\donschenck\containers-k8s-workshop\src\csharp\getOneCustomer\obj\Debug\netcoreapp2.2\getOneCustomer.csproj.CoreCompileInputs.cache
+C:\Users\dschenck\src\github\donschenck\containers-k8s-workshop\src\csharp\getOneCustomer\obj\Debug\netcoreapp2.2\getOneCustomer.RazorAssemblyInfo.cache
+C:\Users\dschenck\src\github\donschenck\containers-k8s-workshop\src\csharp\getOneCustomer\obj\Debug\netcoreapp2.2\getOneCustomer.RazorAssemblyInfo.cs
+C:\Users\dschenck\src\github\donschenck\containers-k8s-workshop\src\csharp\getOneCustomer\obj\Debug\netcoreapp2.2\getOneCustomer.AssemblyInfoInputs.cache
+C:\Users\dschenck\src\github\donschenck\containers-k8s-workshop\src\csharp\getOneCustomer\obj\Debug\netcoreapp2.2\getOneCustomer.AssemblyInfo.cs
+C:\Users\dschenck\src\github\donschenck\containers-k8s-workshop\src\csharp\getOneCustomer\obj\Debug\netcoreapp2.2\getOneCustomer.RazorTargetAssemblyInfo.cache
+C:\Users\dschenck\src\github\donschenck\containers-k8s-workshop\src\csharp\getOneCustomer\obj\Debug\netcoreapp2.2\getOneCustomer.dll
+C:\Users\dschenck\src\github\donschenck\containers-k8s-workshop\src\csharp\getOneCustomer\obj\Debug\netcoreapp2.2\getOneCustomer.pdb
