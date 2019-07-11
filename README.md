@@ -231,7 +231,7 @@ As you can see, there are options and tradeoffs when choosing your starting (FRO
 `CMD` is what is carried out when you run the image in a container, i.e. `docker run`.
 
 <div style="background-color:black;color:white;font-weight:bold;">&nbsp;EXERCISE</div>
-Move into the directory `$WORKSHOP_HOME\src\nodejs\web`. Using the editor of your choice, create the appropriate Dockerfile in the directory of your application. Bonus: Add the MAINTAINER instruction.
+Move into the directory `$WORKSHOP_HOME\src\nodejs\k8s_example`. Using the editor of your choice, create the appropriate Dockerfile in the directory of your application. Bonus: Add the MAINTAINER instruction.
 
 ```
 docker ps
