@@ -23,7 +23,7 @@ You will need to make sure the following prerequisites are available on your mac
 * Kubernetes command line utility
 * Language compiler of your choice -- Node.js and .NET are included in this tutorial.
 * Program Editor of your choice
-* minishift  
+* minikube
 
 In addition, a reliable internet connection is required. As always, the faster the better. Installation instructions are based on the operating system you will be using:
 
@@ -61,13 +61,14 @@ choco install dotnet
 ```
 
 ### W-5: Install virtualbox
+*This is _not_ necessary if you are using Hyper-V*  
 ```powershell
 choco install virtualbox
 ```
 
-### W-6: Install minishift
+### W-6: Install minikube
 ```powershell
-choco install minishift
+choco install minikube
 ```
 
 ### W-7: Install git
@@ -88,13 +89,17 @@ In order to execute the code mentioned in this workshop, you must be in the dire
 
 
 ## Using Docker Hub
-Docker Hub is an online registry where you can fetch and store images. You can create an account at [hub.docker.com](hub.docker.com) and then use that account to *pull* and *push* images.
+Docker Hub is an online registry where you can fetch and store images. You can create an account at [hub.docker.com](hub.docker.com) and then use that account to *pull* and *push* images. *Pull* and *push* do what you might expect: Pull will download and image to your machine. Push will upload from your machine to a registry.
 
 Note that the user id is case-sensitive.
 
 Docker Hub is where you will most likely find official images. For example, the official image for MySQL is stored here.
 
 This is also where documentation for an image *should* be found.
+
+You can also use any other compatible registry. Quay.io is an example. You can, for example, *pull* an image by using the following command:
+
+`docker pull quay.io/donschenck/locationms:v2`  
 
 <div style="background-color:black;color:white;font-weight:bold;">&nbsp;EXERCISE</div>  
 Find the MySQL image on Docker Hub.
@@ -143,15 +148,17 @@ For more examples and ideas, visit:
  https://docs.docker.com/engine/userguide/
 ```
 <div style="background-color:black;color:white;font-weight:bold;">&nbsp;EXERCISE</div>
-As suggested in the above output, run an Ubuntu container on your machine. It's literally that simple to get a Linux container running.
+Inspired by the above output, run a Fedora container on your machine. It's literally that simple to get a Linux container running.
 
 ```bash
-docker run -it ubuntu bash
+docker run -it fedora bash
 ```
 
 ## Building Your First Image
 ### What is an image?
-An image is a package of bits that are executable by a container runtime. An image is immutable -- it cannot be changed -- and is inactive until it is executed. When it is run, it runs in (or becomes, from the standpoint of conversation) a "container". An image is at rest; it becomes a container when it's running. An analogy would be a class that, once instantiated, becomes an object. An image can be saved, loaded, stored, etc.
+An image is a package of bits that are executable by a container runtime. An image is immutable -- it cannot be changed -- and is inactive until it is executed. When it is started, it runs in (or becomes, from the standpoint of conversation) a "container". An image is at rest; it becomes a container when it's running. An analogy would be a class that, once instantiated, becomes an object. An image can be saved, loaded, stored, etc.
+
+Important note: When you are using docker on your local machines, the images are stored on your hard drive. If you're not careful, you can quickly take up a lot of disk space with unused or older images.
 
 An image is a part of what is known as "Immutable Infrastructure", the idea that you replace parts of your system rather than change them. This is a key aspect of microservices.
 
