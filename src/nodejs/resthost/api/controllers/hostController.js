@@ -1,5 +1,7 @@
 'use strict'
 
+const os = require('os')
+
 exports.getHost = function(req, res) {
-    res.send(req.hostname)
+    res.send(os.hostname())
 }
