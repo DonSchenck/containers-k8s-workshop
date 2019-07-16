@@ -97,6 +97,8 @@ Docker Hub is where you will most likely find official images. For example, the 
 
 This is also where documentation for an image *should* be found.
 
+### Other registries  
+
 You can also use any other compatible registry. Quay.io is an example. You can, for example, *pull* an image by using the following command:
 
 `docker pull quay.io/donschenck/locationms:v2`  
@@ -147,6 +149,9 @@ Share images, automate workflows, and more with a free Docker ID:
 For more examples and ideas, visit:
  https://docs.docker.com/engine/userguide/
 ```
+### What Just Happened?  
+An image was loaded into a container and started. It ran, then completed, and returned control back to the host. Note that, in many cases, you want the container to run nonstop. That is explained later.  
+
 <div style="background-color:black;color:white;font-weight:bold;">&nbsp;EXERCISE</div>
 Inspired by the above output, run a Fedora container on your machine. It's literally that simple to get a Linux container running.
 
@@ -154,32 +159,37 @@ Inspired by the above output, run a Fedora container on your machine. It's liter
 docker run -it fedora bash
 ```
 
+The `-it` flag makes this an interactive session, i.e. the bash shell opens in a terminal window. Unlike the previous exercise, where the program had a definite end point, this is a bash shell and while stay active until you run the `exit` command.
+
+## I Get By With A Little Help...
+Keep this in mind: the `docker` (`podman` if you're using Fedora or RHEL) command has a very helpful `--help` flag for commands. If you're unsure where to head next, running `docker --help` is a good way to get moving. You can get help for a specific command as well. For example, `docker images --help` or `docker run --help` and so on.
+
 ## Building Your First Image
 ### What is an image?
-An image is a package of bits that are executable by a container runtime. An image is immutable -- it cannot be changed -- and is inactive until it is executed. When it is started, it runs in (or becomes, from the standpoint of conversation) a "container". An image is at rest; it becomes a container when it's running. An analogy would be a class that, once instantiated, becomes an object. An image can be saved, loaded, stored, etc.
+An image is a package of bits that are executable by a container runtime. An image is immutable -- it cannot be changed -- and is inactive until it is executed. When it is started, it runs in (or becomes, from the standpoint of conversation) a "container". An image is at rest; it becomes a container when it's running. An analogy would be a class that, once instantiated, becomes an object. An image can be saved, loaded, stored, shared, etc.
 
-Important note: When you are using docker on your local machines, the images are stored on your hard drive. If you're not careful, you can quickly take up a lot of disk space with unused or older images.
+Important note: When you are using docker on your local machines, the images are stored on your hard drive. If you're not careful, you can quickly take up a lot of disk space with unused or older images. If you run `docker images` at any time, you can see a list of images on the host -- your PC in this case.
 
 An image is a part of what is known as "Immutable Infrastructure", the idea that you replace parts of your system rather than change them. This is a key aspect of microservices.
 
 Images are namespaced and versioned by use of a tagging system. For example, a "Hello World" application might be stored in your own registry, with a version tag such as this: `donschenck/helloworld:v2.0`. The namespace is "donschenck", the image name is "helloworld", and the tag is "v2.0". The tag can be any string you chose, and if excluded defaults to "latest".
 
-Tagging is very important, is it allows you to have multiple versions of the same image. This is especially important when you are using Kubernetes and may have different versions running at the same time.  
+Tagging is very important, is it allows you to have multiple versions of the same image. This is especially important when you are using Kubernetes and may have different versions running at the same time. In a production environment, you will want to put a lot of thought into tagging your images.  
 
 ### How an image is built
 Building an image requires three parts:
 1. The code that you wish to execute.
 2. A build engine such as docker.
-3. A file to direct the build process, such as a Dockerfile.
+3. A file to direct the build process, such as the file "Dockerfile".
 
-For this workshop, we'll be using `docker build` and a Dockerfile.
+For this workshop, we'll be using `docker build` and the file "Dockerfile".
 
-Images are built in layers. Further, it is the default behaviour to cache the layers. This is important to consider, as it is often wise to build in a sequence from most-stable to least-stable layers. That way, if you need to rebuild one part (e.g. you changed your code and want to build a new version), it won't be necessary to reload all of the layers.
+Images are built in layers. Further, it is the default behaviour to cache the layers. This is important to consider, as it is often wise to build in a sequence from most-stable to least-stable layers. That way, if you need to rebuild one part (e.g. you changed your code and want to build a new version), it won't be necessary to reload (or download, again) all of the layers.
 
-The beginning layer itself is an image that typically contains multiple layers. For example, if you want to build an image that runs an Nginx web site, you may wish to start with the image `nginx:1.15.1`, which itself is built using the Debian Linux distribution. In this example, you don't have control over the operating system -- nginx chose Debian.
+The beginning layer itself is an image that typically contains multiple layers. For example, if you want to build an image that runs an Nginx web site, you may wish to start with the image `nginx:1.17.1`, which itself is built using the Debian Linux distribution. In this example, you don't have control over the operating system -- nginx chose Debian.
 
 <div style="background-color:black;color:white;font-weight:bold;">&nbsp;EXERCISE</div>
-Find the image `nginx:1.15.1` on docker hub and locate the documentation that indicates that Debian is the Linux distro being used. Hint: The Dockerfile is where it is specified.
+Find the image `nginx:latest` on docker hub and locate information that indicates that Debian is the Linux distro being used. Hint: The Dockerfile is where it is specified.
 
 
 You could, however, start with `registry.access.redhat.com/rhel`, which would be the latest version of Red Hat Enterprise Linux (RHEL). In this case, you would then need to install nginx on top of RHEL, as well as any other necessary prerequisites.
@@ -189,7 +199,7 @@ You could, however, start with `registry.access.redhat.com/rhel`, which would be
 <hr>  
 
 ##### Sidenote: Get your zero-cost copy of Red Hat Enterprise Linux  
-If you'd like a zero-cost developer copy of Red Hat Enterprise Linux, and access to a number of cheat sheets, books, developement tools, and more, simply create an account at developer.redhat.com. It's free and takes only seconds to sign up with your email and a password.  
+If you'd like a zero-cost developer copy of Red Hat Enterprise Linux, and access to a number of cheat sheets, books, developement tools, and more, simply create an account with the [Red Hat Developer Program](developer.redhat.com). It's free and takes only seconds to sign up with your email and a password.  
 
 <hr>  
 
@@ -232,6 +242,13 @@ As you can see, there are options and tradeoffs when choosing your starting (FRO
 
 <div style="background-color:black;color:white;font-weight:bold;">&nbsp;EXERCISE</div>
 Move into the directory `$WORKSHOP_HOME\src\nodejs\k8s_example`. Using the editor of your choice, create the appropriate Dockerfile in the directory of your application. Bonus: Add the MAINTAINER instruction.
+
+## Build Your Image
+With your Dockerfile in place, it's time to build your first image. Make sure you are in the root directory of your project, i.e. the same directory as your Dockerfile. In our case, it's `$WORKSHOP_HOME\src\nodejs\k8s_example`. You can build an image named "k8s_example:v1" by using the following command:  
+
+`docker build -t k8s_example:v1 .`
+
+
 
 ```
 docker ps
