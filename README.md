@@ -202,7 +202,7 @@ The Dockerfile is a list of settings and instructions that are used to direct th
 Here's a Dockerfile to build a web site image. This example uses Node.js. Note that this is *not* representative of a production-ready image; this is purposely kept simple, using a developer-based command (`npm start`). You will find that some production-ready Dockerfiles can get quite complex:
 
 ```
-FROM node:8
+FROM node:11
 WORKDIR /usr/src/app
 COPY package*.json ./
 RUN npm install
@@ -362,6 +362,9 @@ docker run -d -p 3000:3000 -e HOST='0.0.0.0' --name web webtest
 ```
 docker run -d -p 5000:5000 -e ASPNETCORE_URLS='0.0.0.0:5000' --name web webtest
 ```
+
+### More about docker run
+You can read about all the run options on [the documentation page](https://docs.docker.com/engine/reference/commandline/run/).  
 
 ## Building A Web Service
 <div style="background-color:black;color:white;font-weight:bold;">&nbsp;EXERCISE</div>
