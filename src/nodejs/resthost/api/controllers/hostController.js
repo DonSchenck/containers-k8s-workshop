@@ -3,5 +3,5 @@
 const os = require('os')
 
 exports.getHost = function(req, res) {
-    res.send(os.hostname())
+    res.send('resthost v1 running on host: ' + os.hostname())
 }
