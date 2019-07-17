@@ -369,36 +369,48 @@ At this point, you have:
 **CONGRATULATIONS!** You know now enough to build and run an application in a Linux container. 
 
 ## Build and run another image
-Now that a web site is running, let's launch a RESTful api. Move into the proper directory:
+Now that a web site is running, let's launch a RESTful api. The code we're using will return the host name of where it is running, which is particularly interesting in a docker and kubernetes environment. Move into the proper directory:
 
 `cd WORKSHOP_HOME/src/nodejs/resthost`
 
-There you will find a RESTful api application that uses port 3000, as we as a Dockerfile to build it. Build and run the application:
+There you will find a RESTful api application that uses port 3000, as well as a Dockerfile to build it.
 
-`docker build -t rest .`  
-`docker run -d -p 3000:3000 --name rest rest`  
+<div style="background-color:black;color:white;font-weight:bold;">&nbsp;EXERCISE</div>
+Go ahead and build your image. Give it the name "resthost" -- do *not* use a tag. Check to see that it is built (using the `docker images` command), and note the size of the image. If you want to cheat, the solution follows.
+
+```
+docker build -t resthost .
+docker images
+```
+ Run the image you just created:
+
+`docker run -d -p 3000:3000 --name resthost resthost`  
 
 Did you get an error similar to the following?
 ```
-Error response from daemon: driver failed programming external connectivity on endpoint wizardly_meitner (edb5effff25f5454e96c533b29b7927b20f27899cd54773f032a474b36d95551): Bind for 0.0.0.0:3000 failed: port is already allocated
-Error: failed to start containers: rest
+docker run -d -p 3000:3000 --name resthost resthost
+81803bbdef4eb78161b39f21d513bb575dc796f7d8aba4f91c693c7669456438
+C:\Program Files\Docker\Docker\Resources\bin\docker.exe: Error response from daemon: driver failed programming external connectivity on endpoint resthost (1afb028d43840cf703ea7a27261b4618f03010b12d1bacd1c2ae2afc1e90009b): Bind for 0.0.0.0:3000 failed: port is already allocated.
 ```
-This is because your previously-started container (from your previous `docker run...`) is still running. Use the commmand ```docker ps``` to see all your running containers, locate your previous container, and use the ```docker stop``` command to stop execution.
+### Why the error?
+This is because your previously-started container ("k8s_example", from your previous `docker run...`) is still running. Use the commmand ```docker ps``` to see all your running containers, locate the offending container, and use the ```docker stop``` command to stop execution. See the following:
 ```
-docker stop rest
+docker stop k8s_example
 ```
-docker run -d -p 3000:3000 --name myweb web
-docker run -d -p 3000:3000 --name myweb --rm web
+Now, try again to run the image "resthost":
+`docker run -d -p 3000:3000 --name resthost resthost`  
+
+### Another Error!
+
+That's right; the previous container, while *not running*, exists in your docker system. You need to either:
+* Delete it and run again
+* Start it
+
+Let's keep it simple and start it:  
+
+`docker start resthost`
 
 
-
-<div style="background-color:black;color:white;font-weight:bold;">&nbsp;EXERCISE</div>
-Go ahead and build your image. Give it any name you wish. Check to see that it is built (using the `docker images` command), and note the size of the image.
-
-```
-docker build -t myimagename .
-docker images
-```
 
 
 ## Building A Small Web Site
