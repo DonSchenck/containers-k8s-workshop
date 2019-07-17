@@ -504,14 +504,23 @@ kubectl create -f $WORKSHOP_HOME/kubedemo-namespace.yaml
 ```
 In Kubernetes, your application containers run in "pods". You scale up and down by changing the number of pods.
 
+# eval $(minikube docker-env)
+# docker build -t resthost:v1 .
+# edit resthost
+# docker build -t resthost:v2 .
+
 Create a pod:
 ```
-kubectl --namespace=kubedemo run rest --image=rest:v1 --port=3000
+kubectl --namespace=kubedemo run resthost --image=resthost:v1 --expose=true --port=3000
 ```
+You can see what's running in pods by using the following command:
+
+`kubectl get pods --namespace=kubedemo`  
+
 
 Once a pod is up and running, you need to expose your web service:
 ```
-kubectl --namespace=kubedemo expose deployment --port=3000 rest --type=LoadBalancer
+kubectl --namespace=kubedemo expose deployment --port=3000 resthost --type=LoadBalancer
 ```
 Take a look at what we have:
 ```
