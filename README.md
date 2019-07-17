@@ -423,6 +423,10 @@ Now our "resthost" image is running in a container. We can see it in action by u
 Note that the returned content, the host name, matches the first 12 characters of the container ID for the container running the image "resthost".
 
 ## Building A Small Web Site Using C#
+
+Move into the directory $WORKSHOP_HOME/src/csharp/web.
+
+
 ### Compiling the code
 
 `dotnet build --runtime centos.7-x64`  
@@ -456,7 +460,7 @@ Because asp.net defaults to port 80, we need a way to override this. When you ru
 
 Fortunately, we can do the same with containers. Let's run the image in a container, but this time we'll specify an environment variable to be used at runtime:
 
-`docker run -p 5000:5000 -e ASPNETCORE_URLS="http://0.0.0.0:5000" web:v1`  
+`docker run -p 5000:5000 -e ASPNETCORE_URLS='http://0.0.0.0:5000' web:v1`  
 
 Again, point your browser to `localhost:5000`. You will see the ASP.NET web site running.
 
@@ -478,17 +482,17 @@ Run MySQL in a Linux container.
 Earlier, we mentioned port conflicts when running more than one container on a given port. Just one of the powers of Kubernetes is that it will solve this problem.
 
 <div style="background-color:black;color:white;font-weight:bold;">&nbsp;EXERCISE</div>
-Create two images of your 'rest' application. Label them 'rest:v1' and 'rest:v2'. Make sure the text output in each is different, e.g. v1 and v2.  
+Create two images of your 'hostrest' application. Label them 'hostrest:v1' and 'hostrest:v2'. Make sure the text output in each is different, e.g. v1 and v2.  
 
 Let’s say we want to run three containers of rest:v1. Would could use the following commands:
 ```
-docker run -d -p 3000:3000 —name rest1 rest
-docker run -d -p 3001:3000 —name rest2 rest
-docker run -d -p 3002:3000 —name rest3 rest
+docker run -d -p 3000:3000 —name resthost1 resthost:v1
+docker run -d -p 3001:3000 —name resthost2 resthost:v1
+docker run -d -p 3002:3000 —name resthost3 resthost:v1
 ```
 
 <div style="background-color:black;color:white;font-weight:bold;">&nbsp;EXERCISE</div>
-Go ahead and do this (above). This will give you a feel for the hassle of this approach. Imagine if this was 100 instances of 'rest:v1'.
+Go ahead and do this (above). This will give you a feel for the hassle of this approach. Imagine if this was 100 instances of 'resthost:v1'.
 
 Run `kubectl version` to see which version of the Kubernetes command line tool you're running. If this does not work:
 1. Make sure you've installed kubectl
