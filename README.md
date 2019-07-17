@@ -241,50 +241,11 @@ As you can see, there are options and tradeoffs when choosing your starting (FRO
 `CMD` is what is carried out when you run the image in a container, i.e. `docker run`.
 
 <div style="background-color:black;color:white;font-weight:bold;">&nbsp;EXERCISE</div>
-Move into the directory `$WORKSHOP_HOME\src\nodejs\k8s_example`. Using the editor of your choice, create the appropriate Dockerfile in the directory of your application. Bonus: Add the MAINTAINER instruction.
+Move into the directory `$WORKSHOP_HOME\src\nodejs\k8s_example`. Using the editor of your choice, create the appropriate Dockerfile in the directory of your application. Bonus: Add the MAINTAINER instruction. Hint: The Dockerfile shown above works quite well.
 
 ## Build Your Image
-With your Dockerfile in place, it's time to build your first image. Make sure you are in the root directory of your project, i.e. the same directory as your Dockerfile. In our case, it's `$WORKSHOP_HOME\src\nodejs\k8s_example`. You can build an image named "k8s_example:v1" by using the following command:  
-
-`docker build -t k8s_example:v1 .`
-
-
-
-```
-docker ps
-```
-``` 
-docker ps -a
-```
-```
-docker run -d -p 3000:3000 web
-```
-Open `localhost:3000` in your browser. Why isn't it working?
-Get the container name:
-```
-docker ps
-```
-```
-docker logs {container_name}
-```
-
-
-Did you get an error similar to the following?
-```
-Error response from daemon: driver failed programming external connectivity on endpoint wizardly_meitner (edb5effff25f5454e96c533b29b7927b20f27899cd54773f032a474b36d95551): Bind for 0.0.0.0:3000 failed: port is already allocated
-Error: failed to start containers: wizardly_meitner
-```
-This is because your previously-started container (from your previous `docker run...`) is still running. Use the commmand ```docker ps``` to see all your running containers, locate your previous container, and use the ```docker stop``` command to stop execution.
-```
-docker stop {container_name}
-```
-docker run -d -p 3000:3000 --name myweb web
-docker run -d -p 3000:3000 --name myweb --rm web
-
 ### docker build
-The `docker build` command will use a Dockerfile to create an images. The following is an example of a `docker build` command.
-
-In this example, the tag is "myimagename". Because any versioning is not specified, this will be built as "myimagename:latest".
+The `docker build` command will use a Dockerfile to create an images. The following is an example of a `docker build` command. In the following example, the tag is "myimagename". Because any versioning is not specified, this will be built as "myimagename:latest".
 
 ```
 docker build -t myimagename .
@@ -293,7 +254,143 @@ The final part of the command, the period (".") tells the command to use the Doc
 ```
 docker build -t myimagename -f Dockerfile2
 ```
-The `docker build`, as you might imagine, is very powerful with many options. For this workshop, we'll keep it simple, but if you want to learn more, see [the docker build documentation](https://docs.docker.com/engine/reference/commandline/build/).
+The `docker build`, as you might imagine, is very powerful with many options. For this workshop, we'll keep it simple, but if you want to learn more, see [the docker build documentation](https://docs.docker.com/engine/reference/commandline/build/).  
+
+With your Dockerfile in place, it's time to build your first image. Make sure you are in the root directory of your project, i.e. the same directory as your Dockerfile. In our case, it's `$WORKSHOP_HOME\src\nodejs\k8s_example`. You can build an image named "k8s_example:v1" by using the following command:  
+
+`docker build -t k8s_example:v1 .`
+
+You should see something very similar to the following (This is PowerShell; Linux or Mac may be slightly different):
+```  
+PS C:\Users\dschenck\src\github\donschenck\containers-k8s-workshop\src\nodejs\k8s_example> docker build -t k8s_example:v1 .
+Sending build context to Docker daemon  45.57kB
+Step 1/7 : FROM node:11
+11: Pulling from library/node
+a4d8138d0f6b: Pull complete
+dbdc36973392: Pull complete
+f59d6d019dd5: Pull complete
+aaef3e026258: Pull complete
+6e454d3b6c28: Pull complete
+c717a7c205aa: Pull complete
+69b68470ed80: Pull complete
+05a0d45743c9: Pull complete
+d0523573a78c: Pull complete
+Digest: sha256:7dad47a0de4aa1294f8ba73599379777b1acd0afe563ad8e1a633b5fdc6dcd84
+Status: Downloaded newer image for node:11
+ ---> 5b97b72da029
+Step 2/7 : WORKDIR /usr/src/app
+ ---> Running in ed7eaa3f789e
+Removing intermediate container ed7eaa3f789e
+ ---> 0fcbeafe0b38
+Step 3/7 : COPY package*.json ./
+ ---> 2385d498cbfa
+Step 4/7 : RUN npm install
+ ---> Running in e03835722aa5
+added 99 packages from 139 contributors and audited 194 packages in 2.711s
+found 4 vulnerabilities (3 low, 1 critical)
+  run `npm audit fix` to fix them, or `npm audit` for details
+Removing intermediate container e03835722aa5
+ ---> e3568362655a
+Step 5/7 : COPY . .
+ ---> d0ded60be74d
+Step 6/7 : EXPOSE 3000
+ ---> Running in f3500d8d9ae9
+Removing intermediate container f3500d8d9ae9
+ ---> 22fa7f894ce3
+Step 7/7 : CMD [ "npm", "start" ]
+ ---> Running in da2f265f5cdd
+Removing intermediate container da2f265f5cdd
+ ---> c1f6c950d0ba
+Successfully built c1f6c950d0ba
+Successfully tagged k8s_example:v1
+SECURITY WARNING: You are building a Docker image from Windows against a non-Windows Docker host. All files and directories added to build context will have '-rwxr-xr-x' permissions. It is recommended to double check and reset permissions for sensitive files and directories.
+```  
+
+
+Note that the name of the image does not need to match the name of the project or application. The following command will work just as well:
+
+`docker build -t confusing_name:this .`
+
+As you can figure out, naming and tagging becomes very important.  
+
+## Is The Image There?
+If the build was successful, you can prove it by running the following command to view all of the images in your local registry:
+
+`docker image ls` or `docker images`
+
+```
+PS C:\Users\dschenck\src\github\donschenck\containers-k8s-workshop> docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+k8s_example         v1                  c1f6c950d0ba        8 minutes ago       912MB
+node                11                  5b97b72da029        4 days ago          904MB
+```
+
+## Run That Image
+
+In the previous "hello-world" example, we ran the image interactively. In this case, we're going to launch the image in a container and return control to our command line. The application will continue to run "in the background", monitoring localhost, port 3000.  
+
+`docker run -d -p 3000:3000 --name k8s_example k8s_example`  
+
+### THAT DID NOT WORK!
+
+Why? Because if you do not specify a tag, docker will use ":latest" as the default value. Our image is "k8s_example:v1", so it was not found. Let's try this again with the correct tag:
+
+`docker run -d -p 3000:3000 --name k8s_example k8s_example:v1`
+
+The result will be a container running the image. The command will return the *container id*, much like the following:
+
+```
+PS C:\Users\dschenck\src\github\donschenck\containers-k8s-workshop> docker run -d -p 3000:3000 --name k8s_example k8s_example:v1
+cd6d76723741c98f68151003feeb845036abb7ebe17430a14708f9c054d04d85
+```
+
+### What's In A Name?
+In our command `docker run -d -p 3000:3000 --name k8s_example k8s_example:v1`, we specificied a value for the `--name` flag. This is not required. If you do not specify a name for a container, one will be automatically assigned to it. As before, this is a good opportunity to apply solid management regarding naming.
+
+### The Other Stuff
+The `-p` flag allows you to map a host port to the container's port. In this case, the same port is used. This is a very common usage when you are running a container for testing, especially on your local machine. Later, kubernetes will make this easier.
+
+If you do not specify a host port, one will be automatically (and randomly) assigned. Remember this: it will be significant later in this workshop.
+
+The `-d` flag is left to the reader to discover.
+
+### Let's See It
+
+Open `localhost:3000` in your browser.
+
+### RECAP
+
+At this point, you have:
+1. Created a Dockerfile
+2. Built and image with the proper tag
+3. Started running that image in a Linux container
+4. Viewed the resulting web site
+
+**CONGRATULATIONS!** You know now enough to build and run an application in a Linux container. 
+
+## Build and run another image
+Now that a web site is running, let's launch a RESTful api. Move into the proper directory:
+
+`cd WORKSHOP_HOME/src/nodejs/resthost`
+
+There you will find a RESTful api application that uses port 3000, as we as a Dockerfile to build it. Build and run the application:
+
+`docker build -t rest .`  
+`docker run -d -p 3000:3000 --name rest rest`  
+
+Did you get an error similar to the following?
+```
+Error response from daemon: driver failed programming external connectivity on endpoint wizardly_meitner (edb5effff25f5454e96c533b29b7927b20f27899cd54773f032a474b36d95551): Bind for 0.0.0.0:3000 failed: port is already allocated
+Error: failed to start containers: rest
+```
+This is because your previously-started container (from your previous `docker run...`) is still running. Use the commmand ```docker ps``` to see all your running containers, locate your previous container, and use the ```docker stop``` command to stop execution.
+```
+docker stop rest
+```
+docker run -d -p 3000:3000 --name myweb web
+docker run -d -p 3000:3000 --name myweb --rm web
+
+
 
 <div style="background-color:black;color:white;font-weight:bold;">&nbsp;EXERCISE</div>
 Go ahead and build your image. Give it any name you wish. Check to see that it is built (using the `docker images` command), and note the size of the image.
