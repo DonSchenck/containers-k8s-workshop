@@ -402,118 +402,76 @@ Now, try again to run the image "resthost":
 
 ### Another Error!
 
-That's right; the previous container, while *not running*, exists in your docker system. You need to either:
+That's right; the previous container, while *not running*, exists in your docker system. How can you see that? Run the command  
+
+`docker ps -a`
+
+You need to either:
 * Delete it and run again
-* Start it
+* Start it (since it's not actually running)
 
 Let's keep it simple and start it:  
 
 `docker start resthost`
 
+Make note of the container ID that is returned.
 
+Now our "resthost" image is running in a container. We can see it in action by using the following command:
 
+`curl http"//localhost:3000/host`  
 
-## Building A Small Web Site
+Note that the returned content, the host name, matches the first 12 characters of the container ID for the container running the image "resthost".
+
+## Building A Small Web Site Using C#
 ### Compiling the code
+
+`dotnet build --runtime centos.7-x64`  
+`dotnet publish`  
+
 ### Creating the image
+
+`docker build -t web:v1 .`  
+
 ### Running the image
 ```
-docker run web
+docker run -p 5000:5000 --name csharpweb web:v1
 ```
-Use your browser to visit `localhost:3000`.   
+Use your browser to visit `localhost:5000`.   
 
 **Notice that it does not work.**  
-Why? In the Dockerfile, we exposed port 3000 -- which is used by the program -- but the `docker run` command hasn't mapped the port 3000 of the container to a port on the host. This is done using the `-p` flag with the `docker run` command. Note that you do *not* need to use the "host part" of the `-p` flag, but in that case, docker will assign a port number. In fact, let's try it.
+Why? In the Dockerfile, even though we exposed port 5000 -- which is used by the program -- the aspnet web server defaults to port 80. You may have noticed that in the message returned after starting the container.
 
 First, stop the running container by using one of the following:  
 * Press Ctrl-C at the terminal session (you may need press it multiple times)  
 
 or  
 
-* Open a second terminal session, run `docker ps`, find the name of the container, and then run `docker stop {container_name}`
+* Open a second terminal session and run `docker stop csharpweb` followed by `docker rm csharpweb`.
 
-### Exposing the port
+`docker rm` removes an existing container. Poof ... it's gone forever. The image is not deleted; only the container that was running it.
 
-If you haven't already done so, open a second terminal session. We'll use this session to inspect any containers that are running interactively.
+### Specifying runtime environment variables
 
-Now, run the image and allow the runtime to randomly assign a host port:
+Because asp.net defaults to port 80, we need a way to override this. When you run a dotnet web site from the command line, you can first set the environment variable "ASPNETCORE_URLS" to any value, and the runtime will use that.
 
-```
-docker run -p 3000 web
-```
+Fortunately, we can do the same with containers. Let's run the image in a container, but this time we'll specify an environment variable to be used at runtime:
 
-In the second terminal session, run `docker ps` and you can see which port has been assigned to the container.
+`docker run -p 5000:5000 -e ASPNETCORE_URLS="http://0.0.0.0:5000" web:v1`  
 
-Let's stop that container and run the image in a container where *we* control the port assignment.
-
-<div style="background-color:black;color:white;font-weight:bold;">&nbsp;EXERCISE</div>
-Based on what you've learned in the past few minutes, stop the running container.  
-
-Hint: `docker ps` is involved.
-
-Let's run the web image in a container and map the container port 3000 to the host port 3000. Keeping the port numbers the same is a very common practice when using containers.
-
-(Hmmmm ... what happens when you try to run multiple containers on the same port?) <-- More on this later.
-
-```
-docker run -p 3000:3000 web
-```
-Now point your browser to `localhost:3000`.
-
-**It still does not work!**
-
-Let's stop the container and investigate.
-
-```
-docker ps 
-docker stop {container_name}
-```
-
-### Localhost considerations
-Quite simply, the problem is "localhost". The "localhost" in your container is the container itself, *not* your host PC. So when you run the container and then point your host browser to "localhost", you won't see it.
-
-It's not working because the code is monitoring the port on "localhost", and localhost is the Linux container, NOT the host (i.e. your PC). You *could* change the source code to monitor address 0.0.0.0 (or *), build a new docker image, and run the new image.
-
-Node: Alter the file bin/www
-C#: Alter the file Program.cs
-
-OR
+Again, point your browser to `localhost:5000`. You will see the ASP.NET web site running.
 
 
-## Using Environment Variables
-Start docker with environment variable(s) set:
-```
-docker run -d -p 3000:3000 -e HOST='0.0.0.0' --name web webtest
-```
-```
-docker run -d -p 5000:5000 -e ASPNETCORE_URLS='0.0.0.0:5000' --name web webtest
-```
 
-### More about docker run
-You can read about all the run options on [the documentation page](https://docs.docker.com/engine/reference/commandline/run/).  
-
-## Building A Web Service
-<div style="background-color:black;color:white;font-weight:bold;">&nbsp;EXERCISE</div>
-Create a web service and run it on a container. An HTTP GET operation should return the HOSTNAME for the application. Name the image "rest" -- we'll be using this in the Kubernetes portion of this workshop.
-
-Example:
-```
-curl localhost:3000
-Application 'rest' (v1) hostname is d2fa43b00985
-```
-
-## Running MS SQL Server In A Container
+## Running MS SQL Server and/or MySQL In A Container
 As a developer, being able to quickly get a database server up and running can be important. With Linux containers, you can start a database server in seconds.  
 
 Note that, because Linux containers are ephemeral, the container loses all local data when it is shut down. This is not a production environment, but is useful for a developer needing a database.
 
-<div style="background-color:black;color:white;font-weight:bold;">&nbsp;EXERCISE</div>
-Run Microsoft SQL Server in a Linux container. Hint: Use a web search to find the instructions.
-  
-   
+<div style="background-color:black;color:white;font-weight:bold;">&nbsp;OPTIONAL EXERCISE</div>
+Run Microsoft SQL Server in a Linux container. Hint: Use a web search to find the instructions.  
 
-
-<div style="background-color:black;color:white;font-weight:bold;">&nbsp;EXERCISE</div>
+&nbsp;
+<div style="background-color:black;color:white;font-weight:bold;">&nbsp;OPTIONAL EXERCISE</div>
 Run MySQL in a Linux container.
 
 ## Running Your Apps Using Kubernetes
