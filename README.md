@@ -108,7 +108,7 @@ You can also use any other compatible registry. Quay.io is an example. You can, 
 
 `docker pull quay.io/donschenck/locationms:v2`  
 
-<div style="background-color:black;color:white;font-weight:bold;">&nbsp;EXERCISE</div>  
+<div style="background-color:#0B3861;color:white;font-weight:bold;">&nbsp;EXERCISE</div>  
 Find the MySQL image on Docker Hub.
 
 ## Running Hello World
