@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: resthost
+spec:
+  selector:
+    matchLabels:
+      run: resthost
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        run: resthost
+    spec:
+      containers:
+        - name: resthost
+          image: resthost:v1
+          ports:
+            - containerPort: 3000
+              protocol: TCP
