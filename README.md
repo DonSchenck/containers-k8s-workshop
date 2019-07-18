@@ -2,7 +2,7 @@
 ## Code On The Beach
 ### July 26, 2019
 
-### About this workshop  
+#### About this workshop  
 This workshop will guide the participant to use Linux-based containers to build and run applications. In addition, managing a containerized system using Kubernetes will be introduced.
 
 ## Table of Contents
@@ -16,6 +16,10 @@ This workshop will guide the participant to use Linux-based containers to build 
 8. [Running MS SQL Server In A Container](#running-ms-sql-server-in-a-container)
 9. [Running Your Apps Using Kubernetes](#running-your-apps-using-kubernetes)
 10. [Scaling With Kubernetes](#scaling-with-kubernetes)
+
+## A note about podman
+
+In the following workshop, the popular tool 'docker' is referenced. If you are using Linux as your development machine, you should (or must in some cases) use the tool (and command) 'podman' instead. Rest assured; podman is more secure as it does not require root access to your machine. Development efforts mean podman is coming soon to a Linux distro near you. If this applies to you, check [podman.io](https://podman.io) for information and installation instructions.
 
 ## Installing The Prerequisites
 You will need to make sure the following prerequisites are available on your machine:
@@ -663,6 +667,14 @@ This is an easy one. Delete an existing pod; kubernetes will automatically repla
 
 ## YOU'VE DONE IT!
 You've completed the workshop. Congratulations. You're ready to start down the path to using containers and managing them with Kubernetes.
+
+## DevOps for Everyone!
+
+Notice something? You've blurred the lines here between developer and operations. In a kubernetes-based environment, you'll find developer creating scripts and yaml files as they developer their software. Scripts and files that are stored in a version control system (e.g. git).
+
+This "Infrastructure as Code" can then be used by the people in Operations.
+
+Welcome to DevOps.
 
 ## OpenShift
 
