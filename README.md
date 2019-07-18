@@ -1,5 +1,6 @@
 # Containers and Kubernetes Workshop
-## for Code On The Beach 2018
+## Code On The Beach
+### July 26, 2019
 
 ### About this workshop  
 This workshop will guide the participant to use Linux-based containers to build and run applications. In addition, managing a containerized system using Kubernetes will be introduced.
@@ -554,53 +555,93 @@ Run the following command to create the "kubedemo" namespace:
 
 In Kubernetes, your application containers run in "pods". You scale up and down by changing the number of pods.
 
-Create a pod:
+Create a deployment:
 ```
-kubectl --namespace=kubedemo run resthost --image=resthost:v1 --expose=true --port=3000
+kubectl apply -f resthost-application.yaml
 ```
-You can see what's running in pods by using the following command:
+You can see what's running by using the following commands:
 
+`kubectl --namespace=kubedemo get deployments`  
 `kubectl get pods --namespace=kubedemo`  
+`kubectl --namespace=kubedemo get services`  
+
+You will notice that there are no services found. That's next in the workshop.
+
+## Quick Glossary
+* Deployment: This is an object that defines the application to be created and run in your kubernetes cluster.  
+* Pod: Holds one or more containers.  
+* Service: An expression of a network service consisting of one or more pods. This is, in the end, what you are building and using in kubernetes: Services.
+
+## Creating a Service
+
+At this point we have pods running in kubernetes. However, they are not logically grouped together into a Service yet. Let's do that.
+
+`kubectl expose --namespace=kubedemo deployment resthost --type=LoadBalancer --name=resthost`  
+
+`kubectl --namespace=kubedemo get services`
+
+Now you can see that you have a Service running, named "resthost". This is what we use in our applications.
+
+### Why Is This Powerful (and cool)?
+
+In our applications inside kubernetes, we can address this service by name, "resthost". No matter how many pods are running, they all sit behind the "resthost" service. That's where scaling benefits us.
+
+If we're running this on a public-facing server (on prem, AWS, Azure, etc.) we can assign a DNS entry to the IP address and port for this service. This won't change, no matter what we do behind the scenes. For example, we can run multiple versions at the same time, or we can upgrade to a new version with zero downtime -- something called a "Rolling Update". We can use Canary Deployments and Blue/Green Deployments. All while any code that uses our service does not need to change.
+
+### IP Address and Port
+
+When you ran `kubectl --namespace=kubedemo get services` the system reported the port number used by the service. For example, it may read "3000:30620/TCP". The first port is what the application uses; the second port is what was randomly assigned to it. Kubernetes keeps track of that for us.
+
+That means we can run two different services that **both** use, say, port 3000, in the same cluster. The external (host) port will be randomly assigned and managed by kubernetes.
+
+Remember the challenge of running three containers of the same application when using docker? Kubernetes just solved that.
+
+So we have the port number as a result of the `kubectl get services...` command. Now we need the host address of the cluster.
+
+In minikube, we can use the following command to get that information:
+
+`kubectl cluster info`
+
+The output will look much like the following:
+```
+Kubernetes master is running at https://10.0.0.34:8443
+KubeDNS is running at https://10.0.0.34:8443/api/v1/namespaces/kube-system/services/kube-dns:dns/proxy
+```
 
 
-Once a pod is up and running, you need to expose your web service:
-```
-kubectl --namespace=kubedemo expose deployment --port=3000 resthost --type=LoadBalancer
-```
-Take a look at what we have:
-```
-kubectl —namespace=kubedemo get pods
-kubectl —namespace=kubedemo get services
-```
 
 You can see your pod using `curl`:
 ```
-curl {ip_address_of_service}
+curl http://{ip_address_of_service}/host
 ```
+For this particular example, it would be `curl https://10.0.0.34:30620/host`.  
+
+If you run this multiple times, you will see that the host name changes. You're using the same URI but being served by two different pods.
+
+If it is *not* switching between the two pods, it's because of caching. On my Windows PC, I overcame this by opening a Linux command line in a terminal and running curl there.
+
 
 ## Scaling With Kubernetes
-Now, finally, we can scale up. Let's make sure three copies of 
-'rest:v1' are running at the same time, *on the same port*. Kubernetes takes care of discovery and load balancing and port conflicts.
+Now, finally, we can scale up. As you noticed, two pods were created for our "resthost" service. You can see that when you run the `kubectl get pods...` command. You can also see it defined in the file that created the Deployment: "resthost-application.yaml".  
+
+Let's make sure three copies of 'resthost:v1' are running at the same time, *on the same port*. Kubernetes takes care of discovery and load balancing and port conflicts.
 
 ```
-kubectl --namespace=kubedemo scale deployment rest --replicas=3
+kubectl --namespace=kubedemo scale deployment resthost --replicas=3
 ```
+Now if you run the command `kubectl --namespace=kubedemo get pods`, you will see three pods running.
 
 If you run multiple curls, you'll see that you have three different hosts running on the same IP address and port.
 
-Run the following multiple times:
-```
-curl {ip_address_of_service}
-```
 ## Rolling Update With Kubernetes
 Finally, let's update from v1 to v2 without any downtown. Kubernetes will perform an automatic Rolling Update.
 
 ```
-kubectl --namespace=kubedemo set image deployment/rest rest=rest:v2
+kubectl --namespace=kubedemo set image deployment/resthost resthost=resthost:v2
 ```
 To see the change, run the following multiple times:
 ```
-curl {ip_address_of_service}
+curl {ip_address_of_service}:{assigned_port}/host
 ```
 
 <div style="background-color:black;color:white;font-weight:bold;">&nbsp;EXERCISE</div>
@@ -612,9 +653,30 @@ kubectl --namespace=kubedemo get pods
 kubectl delete pod {id_of_one_pod_from_previous_command}
 ```
 
+Notice that we've upgraded our application without any downtime. We also are using the same address (IP and port) as before; that doesn't change.
+
+The ability of kubernetes to group pods together into a service and make them available at a immutable and pre-determined URI is known as "Service Discovery". This means, in a development environment, you can write your code to use a service without fear that it's location will change. That will be consistent across all environments: Developerment, testing, staging and production.
+
+## Self-Healing
+
+This is an easy one. Delete an existing pod; kubernetes will automatically replace it. On the fly, while nothing is interrupted.
 
 ## YOU'VE DONE IT!
-You've completed the workshop. Congratulations. You're ready to start down the path to using containers and managing them with Kubernetes. As an aside: Red Hat OpenShift provides a higher-level experience with Kubernetes and provides a web dashboard.
+You've completed the workshop. Congratulations. You're ready to start down the path to using containers and managing them with Kubernetes.
+
+## OpenShift
+
+OpenShift is an open source Platform as a Service (PaaS) built on top of kubernetes that makes life even easier. For example, you can build an image straight from the source code in a git repo (e.g. Github) and have it automatically update (in OpenShift) every time you push a new update to Github.
+
+You can also easily set up a CI/CD pipeline in OpenShift.
+
+OpenShift also includes templates for common activities. For example, you can create a MySQL database in one line. There [a great blog post about it](https://developers.redhat.com/blog/2019/07/18/mysql-for-developers-in-red-hat-openshift/).
+
+It also provides a very niuce web dashboard.
+
+## Want More?
+
+Join the Red Hat Developer Program -- **it's free!** -- today to get access to a zero-cost Developer's copy of Red Hat Enterprise Linux (RHEL), a container development kit, free books, and much more. Visit [developers.redhat.com](https://developers.redhat.com) right now.
 
 ## Suggested Reading
 [The Docker Book](https://dockerbook.com/)
