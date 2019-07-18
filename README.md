@@ -160,9 +160,9 @@ An image was loaded into a container and started. It ran, then completed, and re
 <div style="background-color:#0B3861;color:white;font-weight:bold;">&nbsp;EXERCISE</div>
 Inspired by the above output, run a Fedora container on your machine. It's literally that simple to get a Linux container running.
 
-```bash
-docker run -it fedora bash
-```
+`docker run -it fedora bash`
+<div style="font-size: smaller;color:gray">(End of Exercise)</div><hr>
+
 
 The `-it` flag makes this an interactive session, i.e. the bash shell opens in a terminal window. Unlike the previous exercise, where the program had a definite end point, this is a bash shell and while stay active until you run the `exit` command.
 
@@ -194,7 +194,9 @@ Images are built in layers. Further, it is the default behaviour to cache the la
 The beginning layer itself is an image that typically contains multiple layers. For example, if you want to build an image that runs an Nginx web site, you may wish to start with the image `nginx:1.17.1`, which itself is built using the Debian Linux distribution. In this example, you don't have control over the operating system -- nginx chose Debian.
 
 <div style="background-color:#0B3861;color:white;font-weight:bold;">&nbsp;EXERCISE</div>
-Find the image `nginx:latest` on docker hub and locate information that indicates that Debian is the Linux distro being used. Hint: The Dockerfile is where it is specified.
+Find the image `nginx:latest` on docker hub and locate information that indicates that Debian is the Linux distro being used. Hint: The Dockerfile is where it is specified.  
+
+<div style="font-size: smaller;color:gray">(End of Exercise)</div><hr>
 
 
 You could, however, start with `registry.access.redhat.com/rhel`, which would be the latest version of Red Hat Enterprise Linux (RHEL). In this case, you would then need to install nginx on top of RHEL, as well as any other necessary prerequisites.
@@ -247,6 +249,7 @@ As you can see, there are options and tradeoffs when choosing your starting (FRO
 
 <div style="background-color:#0B3861;color:white;font-weight:bold;">&nbsp;EXERCISE</div>
 Move into the directory `$WORKSHOP_HOME\src\nodejs\k8s_example`. Using the editor of your choice, create the appropriate Dockerfile in the directory of your application. Bonus: Add the MAINTAINER instruction. Hint: The Dockerfile shown above works quite well.
+<div style="font-size: smaller;color:gray">(End of Exercise)</div><hr>
 
 ## Build Your Image
 ### docker build
@@ -382,11 +385,11 @@ There you will find a RESTful api application that uses port 3000, as well as a 
 
 <div style="background-color:#0B3861;color:white;font-weight:bold;">&nbsp;EXERCISE</div>
 Go ahead and build your image. Give it the name "resthost" -- do *not* use a tag. Check to see that it is built (using the `docker images` command), and note the size of the image. If you want to cheat, the solution follows.
+<div style="font-size: smaller;color:gray">(End of Exercise)</div><hr>
 
-```
-docker build -t resthost .
-docker images
-```
+`docker build -t resthost .`  
+`docker images`  
+
  Run the image you just created:
 
 `docker run -d -p 3000:3000 --name resthost resthost`  
@@ -478,10 +481,12 @@ Note that, because Linux containers are ephemeral, the container loses all local
 
 <div style="background-color:#0B3861;color:white;font-weight:bold;">&nbsp;OPTIONAL EXERCISE</div>
 Run Microsoft SQL Server in a Linux container. Hint: Use a web search to find the instructions.  
+<div style="font-size: smaller;color:gray">(End of Exercise)</div><hr>
 
 &nbsp;
 <div style="background-color:#0B3861;color:white;font-weight:bold;">&nbsp;OPTIONAL EXERCISE</div>
 Run MySQL in a Linux container.
+<div style="font-size: smaller;color:gray">(End of Exercise)</div><hr>
 
 ## Running Your Apps Using Kubernetes
 
@@ -534,6 +539,7 @@ Earlier, we mentioned port conflicts when running more than one container on a g
 
 <div style="background-color:#0B3861;color:white;font-weight:bold;">&nbsp;EXERCISE</div>
 Create two images of your 'hostrest' application. Label them 'hostrest:v1' and 'hostrest:v2'. Make sure the text output in each is different, e.g. v1 and v2. Some hints: The code is at $WORKSHOP_HOME/src/nodejs/resthost/api/controllers/hostController.js. Open the file in your editor of choice to make any changes to the output. When you build it, make sure you specify the correct tag. You're going to create the version 1 image, edit the source code, then build the version 2 image.
+<div style="font-size: smaller;color:gray">(End of Exercise)</div><hr>
 
 Let’s say we want to run three containers of resthost:v1. Would could use the following commands:
 ```
@@ -544,6 +550,7 @@ docker run -d -p 3002:3000 —name resthost3 resthost:v1
 
 <div style="background-color:#0B3861;color:white;font-weight:bold;">&nbsp;EXERCISE</div>
 Go ahead and do this (above -- laucnhing three containers). This will give you a feel for the hassle of this approach. Imagine if this was 100 instances of 'resthost:v1'. 
+<div style="font-size: smaller;color:gray">(End of Exercise)</div><hr>
 
 After you've viewed them (using `docker ps`), stop them and remove them. Hint: `docker stop...` and `docker rm...`.
 
@@ -656,6 +663,7 @@ Delete a pod and watch Kubernetes auto-heal it.
 kubectl --namespace=kubedemo get pods
 kubectl delete pod {id_of_one_pod_from_previous_command}
 ```
+<div style="font-size: smaller;color:gray">(End of Exercise)</div><hr>
 
 Notice that we've upgraded our application without any downtime. We also are using the same address (IP and port) as before; that doesn't change.
 
