@@ -479,12 +479,58 @@ Run Microsoft SQL Server in a Linux container. Hint: Use a web search to find th
 Run MySQL in a Linux container.
 
 ## Running Your Apps Using Kubernetes
+
+Now is the time to dive into Kubernetes and see what the excitement is all about. How can Kubernetes make life easier? This workshop will address three aspects of the Kubernetes story:
+1. Scaling an application
+2. Self-healing applications
+3. Rolling updates to applications
+
+## Start Minikube
+
+First: Stop all your docker containers. Hint: Use `docker ps` and `docker stop`.
+
+Minikube allows you to run a kubernetes cluster on your local machine. This -- where the cluster is running -- is part of what's known as the "context" of your environment. Within the context is also the namespace in which you are working.
+
+The first thing to do is to start minikube on your local machine. Minikube will start a virtual machine, inside which it will run a cluster. The type of virtualization used is dependent on your machine and situation. That is, you may be using Hyper-V (Windows), or Xhyve (MacOS), or VirtualBox.
+
+Use the following command to start minikube:  
+
+`minikube start`
+
+If you receive an error related to the virtualization, you can specify your specific VM environment, such as:  
+
+`minikube start --vm-driver hyperv`  
+or  
+`minikube start --vm-driver xhyve`  
+or  
+`minikube start --vm-driver virtualbox`  
+
+In short: Use the one that works on your machine.
+
+Wait for it to start before continuing.
+
+### About those Linux images
+
+Previously, we built Linux images -- we've been calling them docker images up until now, but they are more accurately Linux images. If you run the command `docker images`, you can see a list. Go ahead and do that now.
+
+Those images are on your local machine. Because minikube is running in a VM, the local images **are not** available to your minikube cluster. We need to set our docker environment so that it "points to" the VM that is running minikube.
+
+Use the following command, and follow the instructions it supplies, to do this:
+
+`minikube docker-env` 
+
+If you followed the instructions that were displayed, you now have your docker environment looking inside your minikube VM. To see the difference, run the command `docker images` again. 
+
+Notice how the output is very different from the previous output.
+
+## Scaling with kubernetes
+
 Earlier, we mentioned port conflicts when running more than one container on a given port. Just one of the powers of Kubernetes is that it will solve this problem.
 
 <div style="background-color:black;color:white;font-weight:bold;">&nbsp;EXERCISE</div>
-Create two images of your 'hostrest' application. Label them 'hostrest:v1' and 'hostrest:v2'. Make sure the text output in each is different, e.g. v1 and v2.  
+Create two images of your 'hostrest' application. Label them 'hostrest:v1' and 'hostrest:v2'. Make sure the text output in each is different, e.g. v1 and v2. Some hints: The code is at $WORKSHOP_HOME/src/nodejs/resthost/api/controllers/hostController.js. Open the file in your editor of choice to make any changes to the output. When you build it, make sure you specify the correct tag. You're going to create the version 1 image, edit the source code, then build the version 2 image.
 
-Let’s say we want to run three containers of rest:v1. Would could use the following commands:
+Let’s say we want to run three containers of resthost:v1. Would could use the following commands:
 ```
 docker run -d -p 3000:3000 —name resthost1 resthost:v1
 docker run -d -p 3001:3000 —name resthost2 resthost:v1
@@ -492,22 +538,21 @@ docker run -d -p 3002:3000 —name resthost3 resthost:v1
 ```
 
 <div style="background-color:black;color:white;font-weight:bold;">&nbsp;EXERCISE</div>
-Go ahead and do this (above). This will give you a feel for the hassle of this approach. Imagine if this was 100 instances of 'resthost:v1'.
+Go ahead and do this (above -- laucnhing three containers). This will give you a feel for the hassle of this approach. Imagine if this was 100 instances of 'resthost:v1'. 
+
+After you've viewed them (using `docker ps`), stop them and remove them. Hint: `docker stop...` and `docker rm...`.
+
+### Creating a Kubernetes namespace:  
 
 Run `kubectl version` to see which version of the Kubernetes command line tool you're running. If this does not work:
 1. Make sure you've installed kubectl
 2. Make sure it's in your PATH
 
-Created a Kubernetes namespace:
-```
-kubectl create -f $WORKSHOP_HOME/kubedemo-namespace.yaml
-```
-In Kubernetes, your application containers run in "pods". You scale up and down by changing the number of pods.
+Run the following command to create the "kubedemo" namespace:  
 
-# eval $(minikube docker-env)
-# docker build -t resthost:v1 .
-# edit resthost
-# docker build -t resthost:v2 .
+`kubectl create -f $WORKSHOP_HOME/kubedemo-namespace.yaml`  
+
+In Kubernetes, your application containers run in "pods". You scale up and down by changing the number of pods.
 
 Create a pod:
 ```
