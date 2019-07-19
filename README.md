@@ -7,6 +7,7 @@ This workshop will guide the participant to use Linux-based containers to build 
 
 ## Table of Contents
 1. [Installing The Prerequisites](#installing-the-prerequisites)
+2. [Before We Start](#before-we-start)
 2. [Using Docker Hub](#using-docker-hub)
 3. [Running Hello World](#running-hello-world)
 4. [Building Your First Image](#building-your-first-image)
@@ -14,8 +15,8 @@ This workshop will guide the participant to use Linux-based containers to build 
 6. [Building A Web Service](building-a-web-service)
 7. [Using Environment Variables](using-environment-variables)
 8. [Running MS SQL Server In A Container](#running-ms-sql-server-in-a-container)
-9. [Running Your Apps Using Kubernetes](#running-your-apps-using-kubernetes)
-10. [Scaling With Kubernetes](#scaling-with-kubernetes)
+9. [Running Your Apps Using Kubernetes](#running-your-apps-using-Kubernetes)
+10. [Scaling With Kubernetes](#scaling-with-Kubernetes)
 
 ## A note about podman
 
@@ -32,69 +33,129 @@ You will need to make sure the following prerequisites are available on your mac
 
 In addition, a reliable internet connection is required. As always, the faster the better. Installation instructions are based on the operating system you will be using:
 
-[Red Hat Enterprise Linux](#red-hat-enterprise-linux)  
-[MacOS](#macos)  
-[Windows Install Instructions](#windows-install-instructions)  
+* [Linux](#linux-install-instructions)  
+* [macOS](#macos-install-instructions)  
+* [Windows Install Instructions](#windows-install-instructions)  
 
-## Windows Install Instructions
-W-0: Open PowerShell and run as administrator
+# Linux Install Instructions
+## L-1: Install docker desktop for your Linux distro
+Visit the [Docker installation instructions](https://docs.docker.com/install/linux/docker-ce/centos/) to select your distro and follow the instructions there.
 
-### W-1: Install [chocolatey](https://chocolatey.org)
+## L-2: Install the Kubernetes command line interface
+Follow the instructions on the web site entitled ["Install kubectl on Linux"](https://Kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl-on-linux).
+
+## L-3: Install Node.js
+Visit [the Node.js binary installation page](https://github.com/nodejs/help/wiki/Installation) and follow the instructions there.
+
+## L-4: Install .NET
+
+Visit [the .NET Core download page](https://dotnet.microsoft.com/download) and follow the distro-specific instructions there.
+
+## L-5: Install minikube
+
+Visit [the Kubernetes "Install Minikube" page](https://Kubernetes.io/docs/tasks/tools/install-minikube/) for the instructions for installing Minikube on your Linux machine.
+
+## L-6: Install Git
+
+Visit [the "1.5 Getting Started - Installing Git" web page](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) and follow the distro-specific instructions where.
+
+## L-7: Clone the workshop repository
+```bash
+git clone https://github.com/donschenck/containers-k8s-workshop.git
+```
+Note the directory created; this is your workshop home directory. It will be referred to as $WORKSHOP_HOME in the following text.
+
+
+# macOS Install Instructions  
+## M-1: Install docker desktop for Mac
+Visit the [Install Docker Desktop for Mac web site](https://docs.docker.com/docker-for-mac/install/) and follow the instructions there.
+
+## M-2: Install the Kubernetes command line interface
+Follow the instructions on the web site entitled ["Install kubectl on macOS"](https://Kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl-on-macos).
+
+## M-3: Install Node.js
+Visit [the Node.js Downloads page](https://nodejs.org/en/download/) to download the macOS Installer. Then simply run it to install Node.js on your macOS machine.
+
+## M-4: Install .NET
+
+Visit [the .NET Core download page](https://dotnet.microsoft.com/download) and download the .NET Core SDK. Then simply run it to install .NET Core on your macOS machine.
+
+## M-5: Install minikube
+
+Visit [the Kubernetes "Install Minikube" page](https://Kubernetes.io/docs/tasks/tools/install-minikube/) for the instructions for installing Minikube on your macOS machine.
+
+## M-6: Install Git
+
+Visit [the Git web page](https://www.git-scm.com/) to download the macOS installer. Then simply run it to install Git on your macOS machine.
+
+## M-7: Clone the workshop repository
+```bash
+git clone https://github.com/donschenck/containers-k8s-workshop.git
+```
+Note the directory created; this is your workshop home directory. It will be referred to as $WORKSHOP_HOME in the following text.
+
+# Windows Install Instructions
+## W-0: Open PowerShell and run as administrator
+
+## W-1: Install [chocolatey](https://chocolatey.org)
 ```powershell
 Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
 ```
 
-### W-2: Install docker for Windows
+## W-2: Install docker for Windows
 ```powershell
 choco install docker-for-windows
 ```
+Interesting side note: [Things are happening and changing regarding Windows](https://engineering.docker.com/2019/06/docker-hearts-wsl-2/).
 
-### W-3: Install the Kubernetes command line interface
+## W-3: Install the Kubernetes command line interface
 ```powershell
-choco install kubernetes-cli
+choco install Kubernetes-cli
 ```
 
-### W-4: Install language compiler  
-#### Node.js
+## W-4: Install language compiler  
+### Node.js
 ```powershell
 choco install nodejs
 ```
 
-#### .NET
+### .NET
 ```powershell
 choco install dotnet
 ```
 
-### W-5: Install virtualbox
+## W-5: Install virtualbox
 *This is _not_ necessary if you are using Hyper-V*  
 ```powershell
 choco install virtualbox
 ```
 
-### W-6: Install minikube
+## W-6: Install minikube
 ```powershell
 choco install minikube
 ```
 
-### W-7: Install git
+## W-7: Install git
 ```powershell
 choco install git
 ```
 You may need to log out and back in for git to work.
 
 
-### W-8: Clone the workshop repository
+## W-8: Clone the workshop repository
 ```powershell
 git clone https://github.com/donschenck/containers-k8s-workshop.git
 ```
 Note the directory created; this is your workshop home directory. It will be referred to as $WORKSHOP_HOME in the following text.
 
+# Before we start
+
 ## Workshop directory
 In order to execute the code mentioned in this workshop, you must be in the directory `$WORKSHOP_HOME\src\nodejs` under your home directory for the repository. 
 
 
-## Using Docker Hub
-Docker Hub is an online registry where you can fetch and store images. You can create an account at [hub.docker.com](hub.docker.com) and then use that account to *pull* and *push* images. *Pull* and *push* do what you might expect: Pull will download and image to your machine. Push will upload from your machine to a registry.
+# Using Docker Hub
+Docker Hub is an online __registry__ where you can fetch and store images; your own as well as other public images supplied by others. You can create an account at [hub.docker.com](hub.docker.com) and then use that account to *pull* and *push* images. *Pull* and *push* do what you might expect: Pull will download and image to your machine. Push will upload from your machine to a registry.
 
 Note that the user id is case-sensitive.
 
@@ -102,14 +163,17 @@ Docker Hub is where you will most likely find official images. For example, the 
 
 This is also where documentation for an image *should* be found.
 
-### Other registries  
+## Other registries  
 
-You can also use any other compatible registry. Quay.io is an example. You can, for example, *pull* an image by using the following command:
+You can also use any other compatible registry. Quay.io is an example (disclaimer: quay.io is a Red Hat product). You can, for example, *pull* an image by using the following command:
 
-`docker pull quay.io/donschenck/locationms:v2`  
+```bash
+docker pull quay.io/donschenck/locationms:v2`  
+```
+<div style="background-color:#0B3861;color:white;font-weight:bold;height:40px;font-size:25px;height:40px;font-size:25px;">&nbsp;EXERCISE</div>  
 
-<div style="background-color:#0B3861;color:white;font-weight:bold;">&nbsp;EXERCISE</div>  
-Find the MySQL image on Docker Hub.
+### Find the MySQL image on Docker Hub.
+<div style="font-size: smaller;color:gray">(End of Exercise)</div><hr>  
 
 ## Running Hello World
 You can run images in a container even if the image is not in your local registry. Note that "local" refers to your docker host, which does not necessarily need to be your PC. You might, for example, be using a host at a remote location such as a server, on Azure, etc.
@@ -118,8 +182,9 @@ If the image is not in your registry, docker will automagically attempt to pull 
 
 To see an example of this, run an image without first "pulling" it.
 
-<div style="background-color:#0B3861;color:white;font-weight:bold;">&nbsp;EXERCISE</div>
-Run the official docker hello-world image:  
+<div style="background-color:#0B3861;color:white;font-weight:bold;height:40px;font-size:25px;">&nbsp;EXERCISE</div>  
+
+### Run the official docker hello-world image:  
 
 ```bash
 docker run hello-world
@@ -154,17 +219,32 @@ Share images, automate workflows, and more with a free Docker ID:
 For more examples and ideas, visit:
  https://docs.docker.com/engine/userguide/
 ```
-### What Just Happened?  
-An image was loaded into a container and started. It ran, then completed, and returned control back to the host. Note that, in many cases, you want the container to run nonstop. That is explained later.  
-
-<div style="background-color:#0B3861;color:white;font-weight:bold;">&nbsp;EXERCISE</div>
-Inspired by the above output, run a Fedora container on your machine. It's literally that simple to get a Linux container running.
-
-`docker run -it fedora bash`
 <div style="font-size: smaller;color:gray">(End of Exercise)</div><hr>
 
+## What Just Happened?  
+An __image__ was loaded into a __container__ and started. This happened inside a _Virtual Machine_ (VM) that is running on your machine. The "hello-world" image ran, and after the program completed, returned control back to the host. Note that, in many cases, you want the container to run nonstop, e.g. a web service. That is explained later in the workshop.  
 
-The `-it` flag makes this an interactive session, i.e. the bash shell opens in a terminal window. Unlike the previous exercise, where the program had a definite end point, this is a bash shell and while stay active until you run the `exit` command.
+You can run any image you choose; it does not need to be compatible with the host. For example, you can run a Linux program on your Windows PC.
+
+<div style="background-color:#0B3861;color:white;font-weight:bold;height:40px;font-size:25px;">&nbsp;EXERCISE</div> 
+
+### Run Fedora in an container  
+
+Inspired by the above output, run a Fedora container on your machine. It's literally that simple to get a Linux container running.
+
+```bash
+docker run -it fedora bash
+```  
+
+Note: The `-it` flag makes this an interactive session, i.e. the bash shell opens in a terminal window. Unlike the previous exercise, where the program had a definite end point, this is a bash shell and will stay active until you run the `exit` command at the shell command line.
+
+<div style="font-size: smaller;color:gray">(End of Exercise)</div><hr>
+
+## How does a container work?
+
+A container runs on top of (almost) any Linux distro. It does this by making calls to the Linux kernel. Because it uses the kernel directly, the specific _distribution_ (distro) of Linux doesn't matter. A image that was built on a Windows machine, that was published for Ubuntu, can be run in a container running on a Red Hat Enterprise Linux (RHEL) machine.
+
+In fact, because of this, some argue that "Kubernetes is the new operating system".
 
 ## I Get By With A Little Help...
 Keep this in mind: the `docker` (`podman` if you're using Fedora or RHEL) command has a very helpful `--help` flag for commands. If you're unsure where to head next, running `docker --help` is a good way to get moving. You can get help for a specific command as well. For example, `docker images --help` or `docker run --help` and so on.
@@ -193,7 +273,7 @@ Images are built in layers. Further, it is the default behaviour to cache the la
 
 The beginning layer itself is an image that typically contains multiple layers. For example, if you want to build an image that runs an Nginx web site, you may wish to start with the image `nginx:1.17.1`, which itself is built using the Debian Linux distribution. In this example, you don't have control over the operating system -- nginx chose Debian.
 
-<div style="background-color:#0B3861;color:white;font-weight:bold;">&nbsp;EXERCISE</div>
+<div style="background-color:#0B3861;color:white;font-weight:bold;height:40px;font-size:25px;">&nbsp;EXERCISE</div>
 Find the image `nginx:latest` on docker hub and locate information that indicates that Debian is the Linux distro being used. Hint: The Dockerfile is where it is specified.  
 
 <div style="font-size: smaller;color:gray">(End of Exercise)</div><hr>
@@ -247,7 +327,7 @@ As you can see, there are options and tradeoffs when choosing your starting (FRO
 
 `CMD` is what is carried out when you run the image in a container, i.e. `docker run`.
 
-<div style="background-color:#0B3861;color:white;font-weight:bold;">&nbsp;EXERCISE</div>
+<div style="background-color:#0B3861;color:white;font-weight:bold;height:40px;font-size:25px;">&nbsp;EXERCISE</div>
 Move into the directory `$WORKSHOP_HOME\src\nodejs\k8s_example`. Using the editor of your choice, create the appropriate Dockerfile in the directory of your application. Bonus: Add the MAINTAINER instruction. Hint: The Dockerfile shown above works quite well.
 <div style="font-size: smaller;color:gray">(End of Exercise)</div><hr>
 
@@ -356,7 +436,7 @@ cd6d76723741c98f68151003feeb845036abb7ebe17430a14708f9c054d04d85
 In our command `docker run -d -p 3000:3000 --name k8s_example k8s_example:v1`, we specificied a value for the `--name` flag. This is not required. If you do not specify a name for a container, one will be automatically assigned to it. As before, this is a good opportunity to apply solid management regarding naming.
 
 ### The Other Stuff
-The `-p` flag allows you to map a host port to the container's port. In this case, the same port is used. This is a very common usage when you are running a container for testing, especially on your local machine. Later, kubernetes will make this easier.
+The `-p` flag allows you to map a host port to the container's port. In this case, the same port is used. This is a very common usage when you are running a container for testing, especially on your local machine. Later, Kubernetes will make this easier.
 
 If you do not specify a host port, one will be automatically (and randomly) assigned. Remember this: it will be significant later in this workshop.
 
@@ -377,13 +457,13 @@ At this point, you have:
 **CONGRATULATIONS!** You know now enough to build and run an application in a Linux container. 
 
 ## Build and run another image
-Now that a web site is running, let's launch a RESTful api. The code we're using will return the host name of where it is running, which is particularly interesting in a docker and kubernetes environment. Move into the proper directory:
+Now that a web site is running, let's launch a RESTful api. The code we're using will return the host name of where it is running, which is particularly interesting in a docker and Kubernetes environment. Move into the proper directory:
 
 `cd WORKSHOP_HOME/src/nodejs/resthost`
 
 There you will find a RESTful api application that uses port 3000, as well as a Dockerfile to build it.
 
-<div style="background-color:#0B3861;color:white;font-weight:bold;">&nbsp;EXERCISE</div>
+<div style="background-color:#0B3861;color:white;font-weight:bold;height:40px;font-size:25px;">&nbsp;EXERCISE</div>
 Go ahead and build your image. Give it the name "resthost" -- do *not* use a tag. Check to see that it is built (using the `docker images` command), and note the size of the image. If you want to cheat, the solution follows.
 <div style="font-size: smaller;color:gray">(End of Exercise)</div><hr>
 
@@ -479,12 +559,12 @@ As a developer, being able to quickly get a database server up and running can b
 
 Note that, because Linux containers are ephemeral, the container loses all local data when it is shut down. This is not a production environment, but is useful for a developer needing a database.
 
-<div style="background-color:#0B3861;color:white;font-weight:bold;">&nbsp;OPTIONAL EXERCISE</div>
+<div style="background-color:#0B3861;color:white;font-weight:bold;height:40px;font-size:25px;">&nbsp;OPTIONAL EXERCISE</div>
 Run Microsoft SQL Server in a Linux container. Hint: Use a web search to find the instructions.  
 <div style="font-size: smaller;color:gray">(End of Exercise)</div><hr>
 
 &nbsp;
-<div style="background-color:#0B3861;color:white;font-weight:bold;">&nbsp;OPTIONAL EXERCISE</div>
+<div style="background-color:#0B3861;color:white;font-weight:bold;height:40px;font-size:25px;">&nbsp;OPTIONAL EXERCISE</div>
 Run MySQL in a Linux container.
 <div style="font-size: smaller;color:gray">(End of Exercise)</div><hr>
 
@@ -499,7 +579,7 @@ Now is the time to dive into Kubernetes and see what the excitement is all about
 
 First: Stop all your docker containers. Hint: Use `docker ps` and `docker stop`.
 
-Minikube allows you to run a kubernetes cluster on your local machine. This -- where the cluster is running -- is part of what's known as the "context" of your environment. Within the context is also the namespace in which you are working.
+Minikube allows you to run a Kubernetes cluster on your local machine. This -- where the cluster is running -- is part of what's known as the "context" of your environment. Within the context is also the namespace in which you are working.
 
 The first thing to do is to start minikube on your local machine. Minikube will start a virtual machine, inside which it will run a cluster. The type of virtualization used is dependent on your machine and situation. That is, you may be using Hyper-V (Windows), or Xhyve (MacOS), or VirtualBox.
 
@@ -533,11 +613,11 @@ If you followed the instructions that were displayed, you now have your docker e
 
 Notice how the output is very different from the previous output.
 
-## Scaling with kubernetes
+## Scaling with Kubernetes
 
 Earlier, we mentioned port conflicts when running more than one container on a given port. Just one of the powers of Kubernetes is that it will solve this problem.
 
-<div style="background-color:#0B3861;color:white;font-weight:bold;">&nbsp;EXERCISE</div>
+<div style="background-color:#0B3861;color:white;font-weight:bold;height:40px;font-size:25px;">&nbsp;EXERCISE</div>
 Create two images of your 'hostrest' application. Label them 'hostrest:v1' and 'hostrest:v2'. Make sure the text output in each is different, e.g. v1 and v2. Some hints: The code is at $WORKSHOP_HOME/src/nodejs/resthost/api/controllers/hostController.js. Open the file in your editor of choice to make any changes to the output. When you build it, make sure you specify the correct tag. You're going to create the version 1 image, edit the source code, then build the version 2 image.
 <div style="font-size: smaller;color:gray">(End of Exercise)</div><hr>
 
@@ -548,7 +628,7 @@ docker run -d -p 3001:3000 —name resthost2 resthost:v1
 docker run -d -p 3002:3000 —name resthost3 resthost:v1
 ```
 
-<div style="background-color:#0B3861;color:white;font-weight:bold;">&nbsp;EXERCISE</div>
+<div style="background-color:#0B3861;color:white;font-weight:bold;height:40px;font-size:25px;">&nbsp;EXERCISE</div>
 Go ahead and do this (above -- laucnhing three containers). This will give you a feel for the hassle of this approach. Imagine if this was 100 instances of 'resthost:v1'. 
 <div style="font-size: smaller;color:gray">(End of Exercise)</div><hr>
 
@@ -579,13 +659,13 @@ You can see what's running by using the following commands:
 You will notice that there are no services found. That's next in the workshop.
 
 ## Quick Glossary
-* Deployment: This is an object that defines the application to be created and run in your kubernetes cluster.  
+* Deployment: This is an object that defines the application to be created and run in your Kubernetes cluster.  
 * Pod: Holds one or more containers.  
-* Service: An expression of a network service consisting of one or more pods. This is, in the end, what you are building and using in kubernetes: Services.
+* Service: An expression of a network service consisting of one or more pods. This is, in the end, what you are building and using in Kubernetes: Services.
 
 ## Creating a Service
 
-At this point we have pods running in kubernetes. However, they are not logically grouped together into a Service yet. Let's do that.
+At this point we have pods running in Kubernetes. However, they are not logically grouped together into a Service yet. Let's do that.
 
 `kubectl expose --namespace=kubedemo deployment resthost --type=LoadBalancer --name=resthost`  
 
@@ -595,7 +675,7 @@ Now you can see that you have a Service running, named "resthost". This is what 
 
 ### Why Is This Powerful (and cool)?
 
-In our applications inside kubernetes, we can address this service by name, "resthost". No matter how many pods are running, they all sit behind the "resthost" service. That's where scaling benefits us.
+In our applications inside Kubernetes, we can address this service by name, "resthost". No matter how many pods are running, they all sit behind the "resthost" service. That's where scaling benefits us.
 
 If we're running this on a public-facing server (on prem, AWS, Azure, etc.) we can assign a DNS entry to the IP address and port for this service. This won't change, no matter what we do behind the scenes. For example, we can run multiple versions at the same time, or we can upgrade to a new version with zero downtime -- something called a "Rolling Update". We can use Canary Deployments and Blue/Green Deployments. All while any code that uses our service does not need to change.
 
@@ -603,7 +683,7 @@ If we're running this on a public-facing server (on prem, AWS, Azure, etc.) we c
 
 When you ran `kubectl --namespace=kubedemo get services` the system reported the port number used by the service. For example, it may read "3000:30620/TCP". The first port is what the application uses; the second port is what was randomly assigned to it. Kubernetes keeps track of that for us.
 
-That means we can run two different services that **both** use, say, port 3000, in the same cluster. The external (host) port will be randomly assigned and managed by kubernetes.
+That means we can run two different services that **both** use, say, port 3000, in the same cluster. The external (host) port will be randomly assigned and managed by Kubernetes.
 
 Remember the challenge of running three containers of the same application when using docker? Kubernetes just solved that.
 
@@ -655,7 +735,7 @@ To see the change, run the following multiple times:
 curl {ip_address_of_service}:{assigned_port}/host
 ```
 
-<div style="background-color:#0B3861;color:white;font-weight:bold;">&nbsp;EXERCISE</div>
+<div style="background-color:#0B3861;color:white;font-weight:bold;height:40px;font-size:25px;">&nbsp;EXERCISE</div>
 Create a looping script that runs the `curl` command against your service. After that is running in a separate terminal session, you can run the final step.
 
 Delete a pod and watch Kubernetes auto-heal it.
@@ -667,18 +747,18 @@ kubectl delete pod {id_of_one_pod_from_previous_command}
 
 Notice that we've upgraded our application without any downtime. We also are using the same address (IP and port) as before; that doesn't change.
 
-The ability of kubernetes to group pods together into a service and make them available at a immutable and pre-determined URI is known as "Service Discovery". This means, in a development environment, you can write your code to use a service without fear that it's location will change. That will be consistent across all environments: Developerment, testing, staging and production.
+The ability of Kubernetes to group pods together into a service and make them available at a immutable and pre-determined URI is known as "Service Discovery". This means, in a development environment, you can write your code to use a service without fear that it's location will change. That will be consistent across all environments: Developerment, testing, staging and production.
 
 ## Self-Healing
 
-This is an easy one. Delete an existing pod; kubernetes will automatically replace it. On the fly, while nothing is interrupted.
+This is an easy one. Delete an existing pod; Kubernetes will automatically replace it. On the fly, while nothing is interrupted.
 
 ## YOU'VE DONE IT!
 You've completed the workshop. Congratulations. You're ready to start down the path to using containers and managing them with Kubernetes.
 
 ## DevOps for Everyone!
 
-Notice something? You've blurred the lines here between developer and operations. In a kubernetes-based environment, you'll find developer creating scripts and yaml files as they developer their software. Scripts and files that are stored in a version control system (e.g. git).
+Notice something? You've blurred the lines here between developer and operations. In a Kubernetes-based environment, you'll find developer creating scripts and yaml files as they developer their software. Scripts and files that are stored in a version control system (e.g. git).
 
 This "Infrastructure as Code" can then be used by the people in Operations.
 
@@ -686,7 +766,7 @@ Welcome to DevOps.
 
 ## OpenShift
 
-OpenShift is an open source Platform as a Service (PaaS) built on top of kubernetes that makes life even easier. For example, you can build an image straight from the source code in a git repo (e.g. Github) and have it automatically update (in OpenShift) every time you push a new update to Github.
+OpenShift is an open source Platform as a Service (PaaS) built on top of Kubernetes that makes life even easier. For example, you can build an image straight from the source code in a git repo (e.g. Github) and have it automatically update (in OpenShift) every time you push a new update to Github.
 
 You can also easily set up a CI/CD pipeline in OpenShift.
 
