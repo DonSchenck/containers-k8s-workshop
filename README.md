@@ -348,9 +348,11 @@ docker build -t myimagename .
 ```
 The final part of the command, the period (".") tells the command to use the Dockerfile found in the current directory. It is common, although not necessary, to have the Dockerfile in the home directory of your project. You may have very good reasons to have multiple Dockerfiles, in which case you would specify the Dockerfile by using the `-f` flag:
 ```
-docker build -t myimagename -f Dockerfile2
+docker build -t myimagename -f Dockerfile.original .
 ```
 The `docker build`, as you might imagine, is very powerful with many options. For this workshop, we'll keep it simple, but if you want to learn more, see [the docker build documentation](https://docs.docker.com/engine/reference/commandline/build/).  
+
+<div style="background-color:#0B3861;color:white;font-weight:bold;height:40px;font-size:25px;">&nbsp;EXERCISE</div>  
 
 With your Dockerfile in place, it's time to build your first image. Make sure you are in the root directory of your project, i.e. the same directory as your Dockerfile. In our case, it's `$WORKSHOP_HOME\src\nodejs\k8s_example`. You can build an image named "k8s_example:v1" by using the following command:  
 
@@ -401,6 +403,7 @@ Successfully built c1f6c950d0ba
 Successfully tagged k8s_example:v1
 SECURITY WARNING: You are building a Docker image from Windows against a non-Windows Docker host. All files and directories added to build context will have '-rwxr-xr-x' permissions. It is recommended to double check and reset permissions for sensitive files and directories.
 ```  
+<div style="font-size: smaller;color:gray">(End of Exercise)</div><hr>
 
 
 Note that the name of the image does not need to match the name of the project or application. The following command will work just as well:
