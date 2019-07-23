@@ -545,7 +545,8 @@ Move into the directory $WORKSHOP_HOME/src/csharp/web.
 ### Running the image
 ```
 docker run -p 5000:5000 --name csharpweb web:v1
-```
+``` 
+
 Use your browser to visit `localhost:5000`.   
 
 
@@ -568,6 +569,10 @@ Because asp.net defaults to port 80, we need a way to override this. When you ru
 Fortunately, we can do the same with containers. Let's run the image in a container, but this time we'll specify an environment variable to be used at runtime:
 
 `docker run -p 5000:5000 -e ASPNETCORE_URLS='http://0.0.0.0:5000' web:v1`  
+
+*YOU WILL PROBABLY GET AN ERROR MESSAGE*
+
+Hints: `docker ps -a` and `docker stop` and `docker rm` 
 
 Again, point your browser to `localhost:5000`. You will see the ASP.NET web site running.  
 <div style="font-size: smaller;color:gray">(End of Exercise)</div><hr>
