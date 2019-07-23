@@ -7,22 +7,29 @@ This workshop will guide the participant to use Linux-based containers to build 
 
 ## Table of Contents
 1. [Installing The Prerequisites](#installing-the-prerequisites)
-2. [Before We Start](#before-we-start)
-2. [Using Docker Hub](#using-docker-hub)
-3. [Running Hello World](#running-hello-world)
-4. [Building Your First Image](#building-your-first-image)
-5. [Building A Small Web Site](building-a-small-website)
-6. [Building A Web Service](building-a-web-service)
-7. [Using Environment Variables](using-environment-variables)
-8. [Running MS SQL Server In A Container](#running-ms-sql-server-in-a-container)
-9. [Running Your Apps Using Kubernetes](#running-your-apps-using-Kubernetes)
-10. [Scaling With Kubernetes](#scaling-with-Kubernetes)
+1. [Linux Install Instructions](#linux-install-instructions)
+1. [macOS Install Instructions](#macos-install-instructions)
+1. [Windows Install Instructions](#windows-install-instructions)
+1. [Workshop Directory](#workshop-directory)
+1. [Using Docker Hub](#using-docker-hub)
+1. [Running An Image In A Container](#running-an-image-in-a-container)
+1. [Building Your First Image](#building-your-first-image)
+1. [Running Your Image In A Container](#running-your-image-in-a-container)
+1. [Build and run another image](#build-and-run-another-image)
+1. [Running MS SQL Server and/or MySQL In A Container](#running-ms-sql-server-and/or-mysql-in-a-container)
+1. [Running Your Apps Using Kubernetes](#running-your-apps-using-kubernetes)
+1. [Scaling Without Kubernetes](#scaling-without-kubernetes)
+1. [Scaling With Kubernetes](#scaling-with-kubernetes)
+1. [Rolling Update With Kubernetes](#rolling-update-with-kubernetes)
+1. [YOU'VE DONE IT!](#you've-done-it)
+1. [Want More?](#want-more?)
+1. [Suggested Reading](#suggested-reading)
 
 ## A note about podman
 
-In the following workshop, the popular tool 'docker' is referenced. If you are using Linux as your development machine, you should (or must in some cases) use the tool (and command) 'podman' instead. Rest assured; podman is more secure as it does not require root access to your machine. Development efforts mean podman is coming soon to a Linux distro near you. If this applies to you, check [podman.io](https://podman.io) for information and installation instructions.
+In the following workshop, the popular tool 'docker' is referenced. If you are using Linux as your development machine, you should (or must in some cases) use the tool (and command) 'podman' instead. Rest assured; podman is more secure as it does not require root access to your machine. Development efforts mean podman is coming soon to a Linux distro near you. If this applies to you, check [podman.io](https://podman.io) for information and installation instructions. In that case, where you see the command `docker` in the following workshop, use `podman` instead. Or, create an alias for `podman` named `docker`.
 
-## Installing The Prerequisites
+# Installing The Prerequisites
 You will need to make sure the following prerequisites are available on your machine:
 * docker host and command line utility
 * docker host
@@ -148,9 +155,9 @@ git clone https://github.com/donschenck/containers-k8s-workshop.git
 ```
 Note the directory created; this is your workshop home directory. It will be referred to as $WORKSHOP_HOME in the following text.
 
-# Before we start
 
-## Workshop directory
+
+# Workshop directory
 In order to execute the code mentioned in this workshop, you must be in the directory `$WORKSHOP_HOME\src\nodejs` under your home directory for the repository. 
 
 
@@ -175,6 +182,8 @@ docker pull quay.io/donschenck/locationms:v2`
 ### Find the MySQL image on Docker Hub.
 <div style="font-size: smaller;color:gray">(End of Exercise)</div><hr>  
 
+# Running An Image In A Container  
+
 ## Running Hello World
 You can run images in a container even if the image is not in your local registry. Note that "local" refers to your docker host, which does not necessarily need to be your PC. You might, for example, be using a host at a remote location such as a server, on Azure, etc.
 
@@ -184,7 +193,7 @@ To see an example of this, run an image without first "pulling" it.
 
 <div style="background-color:#0B3861;color:white;font-weight:bold;height:40px;font-size:25px;">&nbsp;EXERCISE</div>  
 
-### Run the official docker hello-world image:  
+## Run the official docker hello-world image:  
 
 ```bash
 docker run hello-world
@@ -221,14 +230,14 @@ For more examples and ideas, visit:
 ```
 <div style="font-size: smaller;color:gray">(End of Exercise)</div><hr>
 
-## What Just Happened?  
+### What Just Happened?  
 An __image__ was loaded into a __container__ and started. This happened inside a _Virtual Machine_ (VM) that is running on your machine. The "hello-world" image ran, and after the program completed, returned control back to the host. Note that, in many cases, you want the container to run nonstop, e.g. a web service. That is explained later in the workshop.  
 
 You can run any image you choose; it does not need to be compatible with the host. For example, you can run a Linux program on your Windows PC.
 
 <div style="background-color:#0B3861;color:white;font-weight:bold;height:40px;font-size:25px;">&nbsp;EXERCISE</div> 
 
-### Run Fedora in an container  
+## Run Fedora in an container  
 
 Inspired by the above output, run a Fedora container on your machine. It's literally that simple to get a Linux container running.
 
@@ -246,11 +255,11 @@ A container runs on top of (almost) any Linux distro. It does this by making cal
 
 In fact, because of this, some argue that "Kubernetes is the new operating system".
 
-## I Get By With A Little Help...
+## Help Is Available
 Keep this in mind: the `docker` (`podman` if you're using Fedora or RHEL) command has a very helpful `--help` flag for commands. If you're unsure where to head next, running `docker --help` is a good way to get moving. You can get help for a specific command as well. For example, `docker images --help` or `docker run --help` and so on.
 
-## Building Your First Image
-### What is an image?
+# Building Your First Image
+## What is an image?
 An image is a package of bits that are executable by a container runtime. An image is immutable -- it cannot be changed -- and is inactive until it is executed. When it is started, it runs in (or becomes, from the standpoint of conversation) a "container". An image is at rest; it becomes a container when it's running. An analogy would be a class that, once instantiated, becomes an object. An image can be saved, loaded, stored, shared, etc.
 
 Important note: When you are using docker on your local machines, the images are stored on your hard drive. If you're not careful, you can quickly take up a lot of disk space with unused or older images. If you run `docker images` at any time, you can see a list of images on the host -- your PC in this case.
@@ -261,7 +270,7 @@ Images are namespaced and versioned by use of a tagging system. For example, a "
 
 Tagging is very important, is it allows you to have multiple versions of the same image. This is especially important when you are using Kubernetes and may have different versions running at the same time. In a production environment, you will want to put a lot of thought into tagging your images.  
 
-### How an image is built
+## How an image is built
 Building an image requires three parts:
 1. The code that you wish to execute.
 2. A build engine such as docker.
@@ -293,7 +302,7 @@ If you'd like a zero-cost developer copy of Red Hat Enterprise Linux, and access
 
 You can even build your own intermediate images. For example, instead building your end-to-end RHEL-nginx-your-website image, you could build an image with RHEL and nginx -- let's call it "myrhelnginx:v1", and then use *that* image as the starting point for all of your nginx website images.
 
-### Dockerfile
+## Dockerfile
 The Dockerfile is a list of settings and instructions that are used to direct the `docker build` process.
 
 Here's a Dockerfile to build a web site image. This example uses Node.js. Note that this is *not* representative of a production-ready image; this is purposely kept simple, using a developer-based command (`npm start`). You will find that some production-ready Dockerfiles can get quite complex:
@@ -309,7 +318,7 @@ CMD [ "npm", "start" ]
 ```
 The commands are run when the image is being built, *with the exception of* the `CMD` command. The `CMD` command is what is executed when you start the image in a container (i.e. `docker run...`).
 
-#### Dockerfile Contents Explained  
+### Dockerfile Contents Explained  
 
 `FROM` is the base or starting image for the image to be built. In this case, we're starting with a Linux machine with Node version 8 already installed. For the purposes of this example, we aren't particularlly concerned with which distribution of Linux is being used. If we check the information for this image on Docker Hub, we can find that it's using Debian Linux.  
 
@@ -331,8 +340,7 @@ As you can see, there are options and tradeoffs when choosing your starting (FRO
 Move into the directory `$WORKSHOP_HOME\src\nodejs\k8s_example`. Using the editor of your choice, create the appropriate Dockerfile in the directory of your application. Bonus: Add the MAINTAINER instruction. Hint: The Dockerfile shown above works quite well.
 <div style="font-size: smaller;color:gray">(End of Exercise)</div><hr>
 
-## Build Your Image
-### docker build
+## docker build
 The `docker build` command will use a Dockerfile to create an images. The following is an example of a `docker build` command. In the following example, the tag is "myimagename". Because any versioning is not specified, this will be built as "myimagename:latest".
 
 ```
@@ -401,7 +409,7 @@ Note that the name of the image does not need to match the name of the project o
 
 As you can figure out, naming and tagging becomes very important.  
 
-## Is The Image There?
+### Is The Image There?
 If the build was successful, you can prove it by running the following command to view all of the images in your local registry:
 
 `docker image ls` or `docker images`
@@ -413,7 +421,7 @@ k8s_example         v1                  c1f6c950d0ba        8 minutes ago       
 node                11                  5b97b72da029        4 days ago          904MB
 ```
 
-## Run That Image
+# Running Your Image In A Container
 
 In the previous "hello-world" example, we ran the image interactively. In this case, we're going to launch the image in a container and return control to our command line. The application will continue to run "in the background", monitoring localhost, port 3000.  
 
@@ -432,7 +440,7 @@ PS C:\Users\dschenck\src\github\donschenck\containers-k8s-workshop> docker run -
 cd6d76723741c98f68151003feeb845036abb7ebe17430a14708f9c054d04d85
 ```
 
-### What's In A Name?
+## What's In A Name?
 In our command `docker run -d -p 3000:3000 --name k8s_example k8s_example:v1`, we specificied a value for the `--name` flag. This is not required. If you do not specify a name for a container, one will be automatically assigned to it. As before, this is a good opportunity to apply solid management regarding naming.
 
 ### The Other Stuff
@@ -442,11 +450,11 @@ If you do not specify a host port, one will be automatically (and randomly) assi
 
 The `-d` flag is left to the reader to discover.
 
-### Let's See It
+## Let's See It
 
 Open `localhost:3000` in your browser.
 
-### RECAP
+## RECAP
 
 At this point, you have:
 1. Created a Dockerfile
@@ -456,7 +464,7 @@ At this point, you have:
 
 **CONGRATULATIONS!** You know now enough to build and run an application in a Linux container. 
 
-## Build and run another image
+# Build and run another image
 Now that a web site is running, let's launch a RESTful api. The code we're using will return the host name of where it is running, which is particularly interesting in a docker and Kubernetes environment. Move into the proper directory:
 
 `cd WORKSHOP_HOME/src/nodejs/resthost`
@@ -542,7 +550,7 @@ or
 
 `docker rm` removes an existing container. Poof ... it's gone forever. The image is not deleted; only the container that was running it.
 
-### Specifying runtime environment variables
+## Specifying runtime environment variables
 
 Because asp.net defaults to port 80, we need a way to override this. When you run a dotnet web site from the command line, you can first set the environment variable "ASPNETCORE_URLS" to any value, and the runtime will use that.
 
@@ -554,7 +562,7 @@ Again, point your browser to `localhost:5000`. You will see the ASP.NET web site
 
 
 
-## Running MS SQL Server and/or MySQL In A Container
+# Running MS SQL Server and/or MySQL In A Container
 As a developer, being able to quickly get a database server up and running can be important. With Linux containers, you can start a database server in seconds.  
 
 Note that, because Linux containers are ephemeral, the container loses all local data when it is shut down. This is not a production environment, but is useful for a developer needing a database.
@@ -568,7 +576,7 @@ Run Microsoft SQL Server in a Linux container. Hint: Use a web search to find th
 Run MySQL in a Linux container.
 <div style="font-size: smaller;color:gray">(End of Exercise)</div><hr>
 
-## Running Your Apps Using Kubernetes
+# Running Your Apps Using Kubernetes
 
 Now is the time to dive into Kubernetes and see what the excitement is all about. How can Kubernetes make life easier? This workshop will address three aspects of the Kubernetes story:
 1. Scaling an application
@@ -613,7 +621,7 @@ If you followed the instructions that were displayed, you now have your docker e
 
 Notice how the output is very different from the previous output.
 
-## Scaling with Kubernetes
+# Scaling Without Kubernetes
 
 Earlier, we mentioned port conflicts when running more than one container on a given port. Just one of the powers of Kubernetes is that it will solve this problem.
 
@@ -634,7 +642,7 @@ Go ahead and do this (above -- laucnhing three containers). This will give you a
 
 After you've viewed them (using `docker ps`), stop them and remove them. Hint: `docker stop...` and `docker rm...`.
 
-### Creating a Kubernetes namespace:  
+## Creating a Kubernetes namespace:  
 
 Run `kubectl version` to see which version of the Kubernetes command line tool you're running. If this does not work:
 1. Make sure you've installed kubectl
@@ -673,13 +681,13 @@ At this point we have pods running in Kubernetes. However, they are not logicall
 
 Now you can see that you have a Service running, named "resthost". This is what we use in our applications.
 
-### Why Is This Powerful (and cool)?
+## Why Is This Powerful (and cool)?
 
 In our applications inside Kubernetes, we can address this service by name, "resthost". No matter how many pods are running, they all sit behind the "resthost" service. That's where scaling benefits us.
 
 If we're running this on a public-facing server (on prem, AWS, Azure, etc.) we can assign a DNS entry to the IP address and port for this service. This won't change, no matter what we do behind the scenes. For example, we can run multiple versions at the same time, or we can upgrade to a new version with zero downtime -- something called a "Rolling Update". We can use Canary Deployments and Blue/Green Deployments. All while any code that uses our service does not need to change.
 
-### IP Address and Port
+## IP Address and Port
 
 When you ran `kubectl --namespace=kubedemo get services` the system reported the port number used by the service. For example, it may read "3000:30620/TCP". The first port is what the application uses; the second port is what was randomly assigned to it. Kubernetes keeps track of that for us.
 
@@ -712,7 +720,7 @@ If you run this multiple times, you will see that the host name changes. You're 
 If it is *not* switching between the two pods, it's because of caching. On my Windows PC, I overcame this by opening a Linux command line in a terminal and running curl there.
 
 
-## Scaling With Kubernetes
+# Scaling With Kubernetes
 Now, finally, we can scale up. As you noticed, two pods were created for our "resthost" service. You can see that when you run the `kubectl get pods...` command. You can also see it defined in the file that created the Deployment: "resthost-application.yaml".  
 
 Let's make sure three copies of 'resthost:v1' are running at the same time, *on the same port*. Kubernetes takes care of discovery and load balancing and port conflicts.
@@ -724,7 +732,7 @@ Now if you run the command `kubectl --namespace=kubedemo get pods`, you will see
 
 If you run multiple curls, you'll see that you have three different hosts running on the same IP address and port.
 
-## Rolling Update With Kubernetes
+# Rolling Update With Kubernetes
 Finally, let's update from v1 to v2 without any downtown. Kubernetes will perform an automatic Rolling Update.
 
 ```
@@ -753,7 +761,7 @@ The ability of Kubernetes to group pods together into a service and make them av
 
 This is an easy one. Delete an existing pod; Kubernetes will automatically replace it. On the fly, while nothing is interrupted.
 
-## YOU'VE DONE IT!
+# YOU'VE DONE IT!
 You've completed the workshop. Congratulations. You're ready to start down the path to using containers and managing them with Kubernetes.
 
 ## DevOps for Everyone!
@@ -774,11 +782,11 @@ OpenShift also includes templates for common activities. For example, you can cr
 
 It also provides a very niuce web dashboard.
 
-## Want More?
+# Want More?
 
 Join the Red Hat Developer Program -- **it's free!** -- today to get access to a zero-cost Developer's copy of Red Hat Enterprise Linux (RHEL), a container development kit, free books, and much more. Visit [developers.redhat.com](https://developers.redhat.com) right now.
 
-## Suggested Reading
+# Suggested Reading
 [The Docker Book](https://dockerbook.com/)
 developers.redhat.com  
 bit.ly/istio-tutorial  
