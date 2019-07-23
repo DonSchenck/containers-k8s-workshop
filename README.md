@@ -320,9 +320,9 @@ The commands are run when the image is being built, *with the exception of* the 
 
 ### Dockerfile Contents Explained  
 
-`FROM` is the base or starting image for the image to be built. In this case, we're starting with a Linux machine with Node version 8 already installed. For the purposes of this example, we aren't particularlly concerned with which distribution of Linux is being used. If we check the information for this image on Docker Hub, we can find that it's using Debian Linux.  
+`FROM` is the base or starting image for the image to be built. In this case, we're starting with a Linux machine with Node version 11 already installed. For the purposes of this example, we aren't particularlly concerned with which distribution of Linux is being used. If we check the information for this image on Docker Hub, we can find that it's using Debian Linux.  
 
-If we wanted to enforce the version of Linux -- say, to use RHEL -- we'd need to start with that (RHEL) as our base image and then install node (and all necessary prerequisites) to get to a level of Red Hat Enterprise Linux running Node version 8.  
+If we wanted to enforce the version of Linux -- say, to use RHEL -- we'd need to start with that (RHEL) as our base image and then install node (and all necessary prerequisites) to get to a level of Red Hat Enterprise Linux running Node version 11.  
 
 As you can see, there are options and tradeoffs when choosing your starting (FROM) image.
 
