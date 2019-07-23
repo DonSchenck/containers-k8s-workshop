@@ -655,7 +655,7 @@ docker run -d -p 3002:3000 —name resthost3 resthost:v1
 ```
 
 <div style="background-color:#0B3861;color:white;font-weight:bold;height:40px;font-size:25px;">&nbsp;EXERCISE</div>
-Go ahead and do this (above -- laucnhing three containers). This will give you a feel for the hassle of this approach. Imagine if this was 100 instances of 'resthost:v1'. 
+Go ahead and do this (above -- launching three containers). This will give you a feel for the hassle of this approach. Imagine if this was 100 instances of 'resthost:v1'. 
 <div style="font-size: smaller;color:gray">(End of Exercise)</div><hr>
 
 After you've viewed them (using `docker ps`), stop them and remove them. Hint: `docker stop...` and `docker rm...`.
@@ -674,12 +674,12 @@ In Kubernetes, your application containers run in "pods". You scale up and down 
 
 Create a deployment:
 ```
-kubectl apply -f resthost-application.yaml
+kubectl apply -f $WORKSHOP_HOME/src/nodejs/resthost-application.yaml
 ```
 You can see what's running by using the following commands:
 
 `kubectl --namespace=kubedemo get deployments`  
-`kubectl get pods --namespace=kubedemo`  
+`kubectl --namespace=kubedemo get pods`  
 `kubectl --namespace=kubedemo get services`  
 
 You will notice that there are no services found. That's next in the workshop.
@@ -719,6 +719,10 @@ In minikube, we can use the following command to get that information:
 
 `kubectl cluster info`
 
+Notice the error? The makers of the `kubectl` command are doing their best to help us along.
+
+Run the correct command, `kubectl cluster-info`.
+
 The output will look much like the following:
 ```
 Kubernetes master is running at https://10.0.0.34:8443
@@ -729,7 +733,7 @@ KubeDNS is running at https://10.0.0.34:8443/api/v1/namespaces/kube-system/servi
 
 You can see your pod using `curl`:
 ```
-curl http://{ip_address_of_service}/host
+curl http://{ip_address_of_service}:{port}/host
 ```
 For this particular example, it would be `curl https://10.0.0.34:30620/host`.  
 
@@ -805,7 +809,7 @@ It also provides a very niuce web dashboard.
 Join the Red Hat Developer Program -- **it's free!** -- today to get access to a zero-cost Developer's copy of Red Hat Enterprise Linux (RHEL), a container development kit, free books, and much more. Visit [developers.redhat.com](https://developers.redhat.com) right now.
 
 # Suggested Reading
-[The Docker Book](https://dockerbook.com/)
+[The Docker Book](https://dockerbook.com/)  
 developers.redhat.com  
 bit.ly/istio-tutorial  
 bit.ly/faas-tutorial  
