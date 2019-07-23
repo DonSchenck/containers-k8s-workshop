@@ -425,6 +425,8 @@ node                11                  5b97b72da029        4 days ago          
 ```
 
 # Running Your Image In A Container
+<div style="background-color:#0B3861;color:white;font-weight:bold;height:40px;font-size:25px;">&nbsp;EXERCISE</div>  
+
 
 In the previous "hello-world" example, we ran the image interactively. In this case, we're going to launch the image in a container and return control to our command line. The application will continue to run "in the background", monitoring localhost, port 3000.  
 
@@ -457,6 +459,8 @@ The `-d` flag is left to the reader to discover.
 
 Open `localhost:3000` in your browser.
 
+<div style="font-size: smaller;color:gray">(End of Exercise)</div><hr>  
+
 ## RECAP
 
 At this point, you have:
@@ -476,7 +480,6 @@ There you will find a RESTful api application that uses port 3000, as well as a 
 
 <div style="background-color:#0B3861;color:white;font-weight:bold;height:40px;font-size:25px;">&nbsp;EXERCISE</div>
 Go ahead and build your image. Give it the name "resthost" -- do *not* use a tag. Check to see that it is built (using the `docker images` command), and note the size of the image. If you want to cheat, the solution follows.
-<div style="font-size: smaller;color:gray">(End of Exercise)</div><hr>
 
 `docker build -t resthost .`  
 `docker images`  
@@ -513,13 +516,17 @@ Let's keep it simple and start it:
 
 `docker start resthost`
 
-Make note of the container ID that is returned.
+Make note of the container ID that is returned. It *isn't*. You get the name of the container that you assigned to it earlier.
 
 Now our "resthost" image is running in a container. We can see it in action by using the following command:
 
-`curl http"//localhost:3000/host`  
+`curl http://localhost:3000/host`  
 
-Note that the returned content, the host name, matches the first 12 characters of the container ID for the container running the image "resthost".
+
+Note that the returned content, the host name, matches the first 12 characters of the container ID for the container running the image "resthost".  
+<div style="font-size: smaller;color:gray">(End of Exercise)</div><hr>
+
+<div style="background-color:#0B3861;color:white;font-weight:bold;height:40px;font-size:25px;">&nbsp;EXERCISE</div>
 
 ## Building A Small Web Site Using C#
 
@@ -541,6 +548,7 @@ docker run -p 5000:5000 --name csharpweb web:v1
 ```
 Use your browser to visit `localhost:5000`.   
 
+
 **Notice that it does not work.**  
 Why? In the Dockerfile, even though we exposed port 5000 -- which is used by the program -- the aspnet web server defaults to port 80. You may have noticed that in the message returned after starting the container.
 
@@ -561,7 +569,9 @@ Fortunately, we can do the same with containers. Let's run the image in a contai
 
 `docker run -p 5000:5000 -e ASPNETCORE_URLS='http://0.0.0.0:5000' web:v1`  
 
-Again, point your browser to `localhost:5000`. You will see the ASP.NET web site running.
+Again, point your browser to `localhost:5000`. You will see the ASP.NET web site running.  
+<div style="font-size: smaller;color:gray">(End of Exercise)</div><hr>
+
 
 
 
